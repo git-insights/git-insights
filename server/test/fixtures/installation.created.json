@@ -1,0 +1,95 @@
+{
+  "event": "installation",
+  "payload": {
+    "action": "created",
+    "installation": {
+      "id": 7165014,
+      "account": {
+        "login": "muratsu",
+        "id": 1308560,
+        "node_id": "MDQ6VXNlcjEzMDg1NjA=",
+        "avatar_url": "https://avatars3.githubusercontent.com/u/1308560?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/muratsu",
+        "html_url": "https://github.com/muratsu",
+        "followers_url": "https://api.github.com/users/muratsu/followers",
+        "following_url": "https://api.github.com/users/muratsu/following{/other_user}",
+        "gists_url": "https://api.github.com/users/muratsu/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/muratsu/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/muratsu/subscriptions",
+        "organizations_url": "https://api.github.com/users/muratsu/orgs",
+        "repos_url": "https://api.github.com/users/muratsu/repos",
+        "events_url": "https://api.github.com/users/muratsu/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/muratsu/received_events",
+        "type": "User",
+        "site_admin": false
+      },
+      "repository_selection": "selected",
+      "access_tokens_url": "https://api.github.com/app/installations/7165014/access_tokens",
+      "repositories_url": "https://api.github.com/installation/repositories",
+      "html_url": "https://github.com/settings/installations/7165014",
+      "app_id": 49426,
+      "app_slug": "git-insights-test",
+      "target_id": 1308560,
+      "target_type": "User",
+      "permissions": {
+        "administration": "read",
+        "contents": "read",
+        "issues": "read",
+        "metadata": "read",
+        "pull_requests": "read"
+      },
+      "events": [
+        "commit_comment",
+        "gollum",
+        "issues",
+        "issue_comment",
+        "label",
+        "pull_request",
+        "pull_request_review",
+        "pull_request_review_comment",
+        "push"
+      ],
+      "created_at": "2020-03-05T13:13:19.000-08:00",
+      "updated_at": "2020-03-05T13:13:20.000-08:00",
+      "single_file_name": null
+    },
+    "repositories": [
+      {
+        "id": 138376761,
+        "node_id": "MDEwOlJlcG9zaXRvcnkxMzgzNzY3NjE=",
+        "name": "angelco-parser",
+        "full_name": "muratsu/angelco-parser",
+        "private": false
+      },
+      {
+        "id": 228906341,
+        "node_id": "MDEwOlJlcG9zaXRvcnkyMjg5MDYzNDE=",
+        "name": "capterra-reviews",
+        "full_name": "muratsu/capterra-reviews",
+        "private": false
+      }
+    ],
+    "requester": null,
+    "sender": {
+      "login": "muratsu",
+      "id": 1308560,
+      "node_id": "MDQ6VXNlcjEzMDg1NjA=",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/1308560?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/muratsu",
+      "html_url": "https://github.com/muratsu",
+      "followers_url": "https://api.github.com/users/muratsu/followers",
+      "following_url": "https://api.github.com/users/muratsu/following{/other_user}",
+      "gists_url": "https://api.github.com/users/muratsu/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/muratsu/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/muratsu/subscriptions",
+      "organizations_url": "https://api.github.com/users/muratsu/orgs",
+      "repos_url": "https://api.github.com/users/muratsu/repos",
+      "events_url": "https://api.github.com/users/muratsu/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/muratsu/received_events",
+      "type": "User",
+      "site_admin": false
+    }
+  }
+}
