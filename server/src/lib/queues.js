@@ -17,7 +17,7 @@ class Connection {
       );
 
       await this.githubTaskQueue.isReady();
-      logger.info('Worker ready to take jobs');
+      logger.info('Connected to task queue');
       return this.db
   }
 }
