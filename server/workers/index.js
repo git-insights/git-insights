@@ -2,7 +2,6 @@
 const fs = require('fs');
 const NODE_ENV = process.env.NODE_ENV || 'development';
 
-
 // https://github.com/bkeepers/dotenv#what-other-env-files-can-i-use
 const dotenvFiles = [
   `${__dirname}/../.env.${NODE_ENV}.local`,
@@ -29,37 +28,30 @@ dotenvFiles.forEach(dotenvFile => {
   }
 });
 
-const {
-  buildRepoHistory,
-} = require('./lib/tasks');
+const Queue = require('bull');
+const { buildRepoHistory } = require('./lib/tasks');
 
-const express = require('express');
+var githubTaskQueue = new Queue(
+  'github-queue',
+  {
+    redis: {
+      port: process.env.REDIS_PORT,
+      host: process.env.REDIS_HOSTNAME,
+      password: process.env.REDIS_PASSWORD
+    }
+  }
+);
 
-const app = express();
-app.enable('trust proxy');
-
-// By default, the Content-Type header of the Task request is set to "application/octet-stream"
-// see https://cloud.google.com/tasks/docs/reference/rest/v2beta3/projects.locations.queues.tasks#AppEngineHttpRequest
-// app.use(bodyParser.raw({type: 'application/octet-stream'}));
-app.use(express.json())
-
-// Basic index to verify app is serving
-app.get('/', (req, res) => { res.send('OK').end(); });
-
-app.post('/log_payload', (req, res) => {
-  // Log the request payload
-  console.log('Received task with payload: %s', req.body);
-  res.send(`Printed task payload: ${req.body}`).end();
-});
-
-app.post('/repo-history', async (req, res) => {
-  const { repoId, repoName, repoOwner, githubInstallationId } = req.body;
+githubTaskQueue.process(async (job) => {
+  console.log(`Processing Job ${job.id}`);
+  const { repoId, repoName, repoOwner, githubInstallationId } = job.data;
   await buildRepoHistory(repoId, repoOwner, repoName, githubInstallationId);
-  res.send('ok').end;
 });
 
-const PORT = process.env.PORT || 8080;
-app.listen(process.env.PORT || 8080, () => {
-  console.log(`App listening on port ${PORT}`);
-  console.log('Press Ctrl+C to quit.');
+githubTaskQueue.isReady().then(() => {
+  console.log('Worker ready to take jobs');
+});
+
+githubTaskQueue.on('failed', (job, e) => {
+  console.error(`Failed Job ${job.id}: ${e}`);
 });

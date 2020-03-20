@@ -6,7 +6,8 @@ const octokit = new Octokit({
   info: console,
   log: console
 });
-const bgTasks = require('../lib/background');
+const queues = require('../lib/queues').Connection;
+const logger = require('../lib/logger');
 
 /**
  * TODO: for now we create a new token every time
@@ -132,12 +133,14 @@ exports.postTrackRepo = asyncHandler(async (req, res, next) => {
     primaryRepo: repoDetails.id
   }, {where: { id: user.id }});
 
-  await bgTasks.createTask('/repo-history', {
+  // Add task to queue
+  const task = await queues.githubTaskQueue.add({
     repoId: repoDetails.id,
     repoOwner: owner,
     repoName: repoName,
     githubInstallationId: user.githubAppId
   });
+  logger.info(`Created task ${task.id}`);
 
   return res.status(200).json({ repoId: repoDetails.id });
 });

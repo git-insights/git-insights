@@ -51,6 +51,12 @@ if (NODE_ENV === 'development') {
 }
 
 /**
+ * Connect to Redis
+ */
+const { Connection } = require('./lib/queues');
+Connection.connectToRedis();
+
+/**
  * Load the app and start it
  */
 const app = require('.');
