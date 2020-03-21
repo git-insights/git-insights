@@ -10,8 +10,8 @@ jobs:
       - node/with-cache:
           steps:
             - run: npm install
-            - run: npm lint:client
-            - run: npm lint:server
+            - run: npm run lint:client
+            - run: npm run lint:server
 workflows:
     build-and-test:
       jobs:
