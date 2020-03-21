@@ -1,4 +1,3 @@
-const models = require('../../models');
 const asyncHandler = require('express-async-handler');
 
 /**
@@ -37,10 +36,10 @@ exports.getLogout = asyncHandler(async (req, res) => {
 
 exports.postGithubAuthenticate = function(req, res, next) {
   if (!req.user) {
-      return res.send(401, 'User Not Authenticated');
+    return res.send(401, 'User Not Authenticated');
   }
   req.auth = {
-      id: req.user.id
+    id: req.user.id
   };
 
   next();

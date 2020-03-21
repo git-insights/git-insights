@@ -60,8 +60,8 @@ exports.getGithubRepos = asyncHandler(async (req, res) => {
       // <https://api.github.com/user/repos?type=public&per_page=10&sort=updated&page=3>; rel=\"next\",
       // <https://api.github.com/user/repos?type=public&per_page=10&sort=updated&page=8>; rel=\"last\",
       // <https://api.github.com/user/repos?type=public&per_page=10&sort=updated&page=1>; rel=\"first\"
-      const prev = response.headers.link ? response.headers.link.match(/rel=\"prev/gm) : undefined;
-      const next = response.headers.link ? response.headers.link.match(/rel=\"next/gm) : undefined;
+      const prev = response.headers.link ? response.headers.link.match(/rel="prev/gm) : undefined;
+      const next = response.headers.link ? response.headers.link.match(/rel="next/gm) : undefined;
 
       let prevPage = null;
       let nextPage = null;
@@ -82,7 +82,7 @@ exports.getGithubRepos = asyncHandler(async (req, res) => {
       }
       return result;
     } catch (err) {
-      console.log(err.message);
+      logger.error(err.message);
       return {};
     }
   }
@@ -94,7 +94,7 @@ exports.getGithubRepos = asyncHandler(async (req, res) => {
 /**
  *  POST /user/track-repo
  */
-exports.postTrackRepo = asyncHandler(async (req, res, next) => {
+exports.postTrackRepo = asyncHandler(async (req, res, _next) => {
   const user = req.user;
 
   // TODO: param validations
@@ -148,7 +148,7 @@ exports.postTrackRepo = asyncHandler(async (req, res, next) => {
 /**
  *  GET /user/logout
  */
-exports.getLogout = asyncHandler(async (req, res, next) => {
+exports.getLogout = asyncHandler(async (req, res, _next) => {
   req.logout();
   return res.status(200).json({ status: 'ok' })
 });

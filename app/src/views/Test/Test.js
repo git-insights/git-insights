@@ -1,16 +1,5 @@
 import React, { Component } from 'react';
-import { makeStyles } from '@material-ui/styles';
-import { Grid } from '@material-ui/core';
-
 import { GithubLogin } from '../../components';
-
-// import { Notifications, Password } from './components';
-
-const useStyles = makeStyles(theme => ({
-  root: {
-    padding: theme.spacing(4)
-  }
-}));
 
 class Test extends Component {
   constructor() {

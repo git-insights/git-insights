@@ -5,284 +5,6 @@ const moment = require('moment-timezone');
 moment.tz.setDefault('America/Los_Angeles');
 
 /**
- *  GET /repo/:id/stargazers
- *  Given repo id, this route returns stargazers
- */
-exports.getStargazers = asyncHandler(async (req, res) => {
-  const id = req.params.id;
-
-  // Cache
-  let cache = await models.Cache.findOne({
-    where: {
-      query: `/repo/${id}/stargazers`
-    }
-  });
-
-  // if it's a cache hit, display cache
-  if (cache) return res.json(cache.data);
-
-  const repo = await models.Repo.findByPk(id);
-
-  // if not found return empty
-  if (repo === null) return res.json({});
-
-  const repoCreateDate = repo.created_at;
-
-  // Date repo is created
-  const repoCreateMonth = repoCreateDate.getMonth() + 1;
-  const repoCreateYear = repoCreateDate.getFullYear();
-
-  // Current year
-  const currentMonth = new Date().getMonth() + 1;
-  const currentYear = new Date().getFullYear();
-
-  const totalMonths = (currentYear - repoCreateYear) * 12 + (currentMonth - repoCreateMonth);
-
-  // Fetch all the stargazes that fit our criteria
-  const stargazes = await models.Stargaze.findAll({
-    where: {
-      repo_id: id
-    }
-  });
-
-  // x: ["feb 12, march 12, ..."]
-  // y: [10, 15, 13, 17],
-
-  const monthToText = (month) => {
-    switch(month) {
-      case 0: return "Jan";
-      case 1: return "Feb";
-      case 2: return "Mar";
-      case 3: return "Apr";
-      case 4: return "May";
-      case 5: return "Jun";
-      case 6: return "Jul";
-      case 7: return "Aug";
-      case 8: return "Sep";
-      case 9: return "Oct";
-      case 10: return "Nov";
-      case 11: return "Dec";
-    }
-  }
-
-  // Populate Data
-  const x = [];
-  for (let month = 0; month < totalMonths; month++) {
-    let curMonth = month % 12;
-    x.push(`${monthToText(curMonth)} ${Math.floor(month / 12) + repoCreateYear}`);
-  }
-  let y = [...Array(totalMonths)].map(()=>0);
-
-  // Compute Stargazes
-  for (let gaze of stargazes) {
-    const date = gaze.stargazed_at;
-    const gazeMonth = date.getMonth() + 1;
-    const gazeYear = date.getFullYear();
-
-    const target = (gazeYear - repoCreateYear) * 12 + (gazeMonth - repoCreateMonth);
-    y[target]++;
-  }
-
-  // Cummulative Stars
-  y = y.reduce((a, x, i) => [...a, x + (a[i-1] || 0)], []);
-
-  return res.json({
-    x,
-    y
-  });
-});
-
-/**
- *  GET /repo/:id/stargazer-orgs
- *  Given repo id, this route returns organizations of the stargazers
- */
-exports.getStargazerOrgs = asyncHandler(async (req, res) => {
-  const id = req.params.id;
-  const companies = {};
-
-  // Cache
-  let cache = await models.Cache.findOne({
-    where: {
-      query: `/repo/${id}/stargazer-orgs`
-    }
-  });
-
-  if (cache) return res.json(cache.data);
-
-  // Fetch all the stargazes that fit our criteria
-  let stargazers = await models.Stargaze.findAll({
-    where: {
-      repo_id: id
-    }
-  });
-
-  // if not found return empty
-  if (stargazers === null) return res.json({});
-
-  // Horrible
-  const normalizeCompany = (name) => {
-    name = name.toLocaleLowerCase();
-    if (name[0] === '@') {
-      name = name.substring(1);
-    }
-    return name;
-  }
-
-  stargazers = stargazers.map(stargaze => stargaze.user_id);
-
-  for (let stargazerId of stargazers) {
-    let user = await models.GithubUser.findByPk(stargazerId);
-    if (user.company === null) continue;
-    let company = normalizeCompany(user.company);
-    if (companies[company]) {
-      companies[company]++;
-    } else {
-      companies[company] = 1;
-    }
-  }
-
-  return res.json(companies);
-});
-
-/**
- *  GET /repo/:id/stargazer-orgs-top10
- *  Given repo id, this route returns top 10 organizations of the stargazers
- */
-exports.getStargazerTopOrgs = asyncHandler(async(req, res) => {
-  const id = req.params.id;
-
-  let cache = await models.Cache.findOne({
-    where: {
-      query: `/repo/${id}/stargazer-orgs-top10`
-    }
-  });
-
-  // too expensive to calculate realtime
-  // use only from cache
-  if (cache) {
-    return res.json(cache.data);
-  } else {
-    return res.json([]);
-  }
-});
-
-/**
- *  GET /repo/:id/stargazer-countries
- *  Given repo id, this route returns countries of the stargazers
- */
-exports.getStargazerCountries = asyncHandler(async(req, res) => {
-  const id = req.params.id;
-  const countries = {};
-
-  // Cache
-  let cache = await models.Cache.findOne({
-    where: {
-      query: `/repo/${id}/stargazer-countries`
-    }
-  });
-
-  if (cache) return res.json(cache.data);
-
-  // Fetch all the stargazes that fit our criteria
-  let stargazers = await models.Stargaze.findAll({
-    where: {
-      repo_id: id
-    }
-  });
-
-  // if not found return empty
-  if (stargazers === null) return res.json({});
-
-  stargazers = stargazers.map(stargaze => stargaze.user_id);
-
-  for (let stargazerId of stargazers) {
-    let user = await models.GithubUser.findByPk(stargazerId);
-    if (user.country === '' || user.country === null) continue;
-    let country = user.country;
-    if (countries[country]) {
-      countries[country]++;
-    } else {
-      countries[country] = 1;
-    }
-  }
-
-  return res.json(countries);
-});
-
-/**
- *  GET /repo/:id/stargazer-topcities
- *  Given repo id, this route returns top countries of the stargazers
- */
-exports.getStargazerTopCities = asyncHandler(async(req, res) => {
-  const id = req.params.id;
-  let tempLocations = {};
-
-  // Cache
-  let cache = await models.Cache.findOne({
-    where: {
-      query: `/repo/${id}/stargazer-topcities`
-    }
-  });
-
-  if (cache) return res.json(cache.data);
-
-  // Fetch all the stargazes that fit our criteria
-  let stargazers = await models.Stargaze.findAll({
-    where: {
-      repo_id: id
-    }
-  });
-
-  // if not found return empty
-  if (stargazers === null) return res.json([]);
-
-  stargazers = stargazers.map(stargaze => stargaze.user_id);
-
-  for (let stargazerId of stargazers) {
-    let user = await models.GithubUser.findByPk(stargazerId);
-    if (user.country === '' || user.country === null || user.city === '') continue;
-    let location = user.city + user.country;
-    if (tempLocations[location]) {
-      tempLocations[location].count++;
-    } else {
-      tempLocations[location] = {};
-      tempLocations[location].count = 1;
-      tempLocations[location].city = user.city;
-      tempLocations[location].country = user.country;
-    }
-  }
-
-  tempLocations = Object.values(tempLocations);
-  tempLocations.sort((a, b) => b.count - a.count);
-  tempLocations = tempLocations.slice(0, 10);
-
-  return res.json(tempLocations);
-});
-
-/**
- *  GET /repo/:id/stargazer-toprepos
- *  Given repo id, this route returns the top shared repos of the stargazers
- */
-exports.getStargazerTopRepos = asyncHandler(async(req, res) => {
-  const id = req.params.id;
-  // const query = '/repo/:id/stargazer-toprepos'
-
-  let cache = await models.Cache.findOne({
-    where: {
-      query: `/repo/${id}/stargazer-toprepos`
-    }
-  });
-
-  // too expensive to calculate realtime
-  // use only from cache
-  if (cache) {
-    return res.json(cache.data);
-  } else {
-    return res.json([]);
-  }
-});
-
-/**
  *  Dashboard Graphs
 
   == TODO ==
@@ -621,7 +343,7 @@ exports.getContributors = asyncHandler(async(req, res) => {
   let committers = [];
 
   commits.forEach(commit => {
-    committerIndex = committers.findIndex(committer => {
+    const committerIndex = committers.findIndex(committer => {
       return committer.name === commit.authorName;
     });
 
@@ -1178,7 +900,7 @@ exports.getReviewsAvgTime = asyncHandler(async(req, res) => {
  * Issues / Bugs
  */
 
- /**
+/**
  * GET /repo/:id/issues/opened
  * Given repo id, return the number of new opened issues
  */
@@ -1242,7 +964,7 @@ exports.getIssuesOpened = asyncHandler(async(req, res) => {
   return res.json(data);
 });
 
- /**
+/**
  * GET /repo/:id/issues/closed
  * Given repo id, return the number of closed issues
  */
@@ -1303,7 +1025,7 @@ exports.getIssuesClosed = asyncHandler(async(req, res) => {
   return res.json(data);
 });
 
- /**
+/**
  * GET /repo/:id/issues/activity
  * Given repo id, return the number of issues with activity
  */

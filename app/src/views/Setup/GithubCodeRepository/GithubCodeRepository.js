@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import { useUser } from 'context';
-import { objectToParams } from 'helpers';
-import { IntegrationCard } from 'components';
 import { Grid, Typography, Container } from '@material-ui/core';
 import { Redirect } from 'react-router-dom';
 

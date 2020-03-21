@@ -46,6 +46,6 @@ module.exports = (sequelize, DataTypes) => {
       ]
     }
   );
-  GithubInstall.associate = function(models) {}
+  GithubInstall.associate = function(_models) {}
   return GithubInstall;
 };

@@ -24,7 +24,7 @@ const corsOptions = {
 /**
  *  Initiate database connection
  */
-const db = require('../../models');
+require('../../models');
 
 // db.sequelize.sync({force: true});
 
@@ -84,7 +84,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 // Basic error handler
-app.use((err, req, res, next) => {
+app.use((err, req, res, _next) => {
   if (err.name === 'UnauthorizedError') {
     return res.status(401).send('Invalid token');
   }

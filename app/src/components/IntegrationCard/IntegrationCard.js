@@ -1,9 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
 import { Card, CardContent, CardActions, Divider, Typography, Button } from '@material-ui/core';
-import { Link } from 'react-router-dom';
 
 // The usage of React.forwardRef will no longer be required for react-router-dom v6.
 // see https://github.com/ReactTraining/react-router/issues/6056
@@ -52,9 +50,9 @@ const IntegrationCard = props => {
     icon,
     serviceDesc,
     serviceName,
-    onChange,
+    // onChange,
     url = '#',
-    ...rest
+    // ...rest
   } = props;
 
   const classes = useStyles();

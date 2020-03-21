@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import { useUser } from 'context';
-import { objectToParams } from 'helpers';
 import { IntegrationCard } from 'components';
 import { Grid, Typography, Container } from '@material-ui/core';
 import { Redirect } from 'react-router-dom';
@@ -29,19 +28,8 @@ const useStyles = makeStyles(theme => ({
 
 const CodeRepository = () => {
   const [repoData, setRepoData] = useState(null);
-  const [navigate, setNavigating] = useState(false);
   const { user, fns } = useUser();
   const classes = useStyles();
-
-  const pickPrimaryRepo = (repo) => {
-    fns.postUserPrimaryRepo(repo)
-      .then(data => {
-          user.primaryRepo = data.repoId;
-          user.trackingRepo = true;
-          setNavigating(true);
-      })
-      .catch(err => console.log(err))
-  }
 
   const fetchRepoData = (page) => {
     fns.fetchUserRepoPage(page)
@@ -51,7 +39,7 @@ const CodeRepository = () => {
       .catch(err => console.log(err));
   }
 
-  if (navigate || user.trackingRepo) {
+  if (user.trackingRepo) {
     // Redirect to repo stats
     return (<Redirect to={`/repo/${user.primaryRepo}/dashboard`} />);
   }
@@ -130,11 +118,6 @@ const CodeRepository = () => {
               actionDisabled={true}
             ></IntegrationCard>
           </Grid>
-            {/* <RepoPicker
-              repos={repoData}
-              fetchRepos={fetchRepoData}
-              pickPrimaryRepo={pickPrimaryRepo}
-            /> */}
         </Grid>
       </Container>
     :

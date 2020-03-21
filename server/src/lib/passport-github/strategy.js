@@ -27,8 +27,7 @@ class Strategy extends OAuth2Strategy {
    * @param {Function} done
    */
   userProfile(accessToken, done) {
-    console.log(accessToken);
-    this._oauth2.get(this._profileURL, accessToken, (error, body, res) => {
+    this._oauth2.get(this._profileURL, accessToken, (error, body, _res) => {
       if (error) {
         try {
           let errorJSON = JSON.parse(error.data);
@@ -46,7 +45,7 @@ class Strategy extends OAuth2Strategy {
         return done(e);
       }
 
-      this._oauth2._request('GET', this._profileURL + '/emails', { 'Accept': 'application/vnd.github.v3+json' }, '', accessToken, function (error, body, res) {
+      this._oauth2._request('GET', this._profileURL + '/emails', { 'Accept': 'application/vnd.github.v3+json' }, '', accessToken, function (error, body, _res) {
         if (error) return done(null, profile);
 
         let json;

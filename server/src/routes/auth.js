@@ -1,7 +1,6 @@
 const authController = require('../controllers/auth');
 const express = require('express');
 const passport = require('passport');
-const { generateToken, sendToken } = require('../lib/tokens');
 const asyncHandler = require('express-async-handler');
 
 const router = express.Router();
@@ -39,7 +38,7 @@ router.route('/github/callback').get(
  * Depending on user status redirect
  */
 router.route('/github-app/connect').get(
-  asyncHandler(async (req, res, next) => {
+  asyncHandler(async (req, res, _next) => {
     if (!req.user) {
       res.redirect(`${process.env.URL_APP}`);
     } else {
@@ -56,7 +55,7 @@ router.route('/github-app/connect').get(
  * Save github installation id and redirect to github setup
  */
 router.route('/github-app/callback').get(
-  asyncHandler(async (req, res, next) => {
+  asyncHandler(async (req, res, _next) => {
     if (!req.user) {
       res.redirect(`${process.env.URL_APP}`);
     } else {

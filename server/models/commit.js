@@ -59,7 +59,7 @@ module.exports = (sequelize, DataTypes) => {
   /**
    * Methods
    */
-  Commit.associate = function(models) {}
+  Commit.associate = function(_models) {}
 
   return Commit;
 };

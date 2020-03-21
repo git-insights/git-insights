@@ -1,6 +1,3 @@
-const Repo = require('./repo');
-const User = require('./user');
-
 module.exports = (sequelize, DataTypes) => {
   const TrackedRepo = sequelize.define(
     'TrackedRepo',

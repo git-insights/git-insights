@@ -1,17 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { Link as RouterLink, withRouter, Redirect } from 'react-router-dom';
+import React from 'react';
+import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import validate from 'validate.js';
 import { makeStyles } from '@material-ui/styles';
 import {
   Grid,
-  Button,
-  IconButton,
-  TextField,
-  Link,
   Typography
 } from '@material-ui/core';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { GithubLogin } from 'components';
 
 const useStyles = makeStyles(theme => ({
@@ -117,68 +111,8 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const SignIn = props => {
-  const { history } = props;
-  const [isLoggedIn, setLoggedIn] = useState(false);
-  const [isError, setIsError] = useState(false);
-  // const { authTokens, setAuthTokens } = useAuth();
-  // const { setUser } = useUser();
-
+const SignIn = _props => {
   const classes = useStyles();
-
-  // const handleSignIn = event => {
-  //   event.preventDefault();
-  //   history.push('/');
-  // };
-
-  // useEffect(() => {
-  //   console.log('Inside useEffect')
-
-  //   const code =
-  //   window.location.href.match(/\?code=(.*)/) &&
-  //   window.location.href.match(/\?code=(.*)/)[1];
-
-  //   if (code) {
-  //     console.log('here')
-  //     // this.setState({ status: STATUS.LOADING });
-  //     const tokenBlob = new Blob(
-  //       [JSON.stringify({verification_code: code}, null, 2)],
-  //       { type: 'application/json' }
-  //     );
-  //     const options = {
-  //       method: 'POST',
-  //       body: tokenBlob,
-  //       mode: 'cors',
-  //       cache: 'default'
-  //     };
-  //     fetch(`${process.env.REACT_APP_API_SERVER}/api/auth/github`, options)
-  //       .then(result => {
-  //         if (result.status === 200) {
-  //           const token = result.headers.get('x-auth-token');
-  //           result.json().then(user => {
-  //             if (token) {
-  //               setUser(user);
-  //               setAuthTokens({token});
-  //               setLoggedIn(true);
-  //             }
-  //           }).catch(e => {
-  //             console.log(`Err: ${e}`);
-  //             setIsError(true);
-  //           }) ;
-  //         } else {
-  //           console.log(`Error`);
-  //           setIsError(true);
-  //         }
-  //       }).catch(e => {
-  //         console.log(`Err: ${e}`);
-  //         setIsError(true);
-  //       })
-  //   }
-  // }, []);
-
-  // if (isLoggedIn || authTokens) {
-  //   return <Redirect to="/" push={true} />;
-  // }
 
   return (
     <div className={classes.root}>
@@ -206,20 +140,6 @@ const SignIn = props => {
               >
                 Gain visibility into your software projects and teams
               </Typography>
-              {/* <div className={classes.person}>
-                <Typography
-                  className={classes.name}
-                  variant="body1"
-                >
-                  Rohan Relan
-                </Typography>
-                <Typography
-                  className={classes.bio}
-                  variant="body2"
-                >
-                  4x entrepreneur, former Tech Lead at Google
-                </Typography>
-              </div> */}
             </div>
           </div>
         </Grid>
@@ -230,11 +150,6 @@ const SignIn = props => {
           xs={12}
         >
           <div className={classes.content}>
-            {/* <div className={classes.contentHeader}>
-              <IconButton onClick={handleBack}>
-                <ArrowBackIcon />
-              </IconButton>
-            </div> */}
             <div className={classes.contentBody}>
               <div className={classes.form}>
                 <Typography

@@ -1,27 +1,17 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
 import LaunchIcon from '@material-ui/icons/Launch';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import {
-  Container,
   Grid,
   Button,
   ButtonGroup,
   Card,
-  CardActionArea,
   CardActions,
   CardContent,
   Divider,
   Typography,
 } from '@material-ui/core';
-
-import { Repo as RepoIcon } from 'icons';
-import { Github as GithubIcon } from 'icons';
 
 const useStyles = makeStyles(theme => ({
   buttonGrid: {
@@ -68,13 +58,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function RepoPickerList(props) {
   const classes = useStyles();
-  const [selectedIndex, setSelectedIndex] = React.useState(null);
-  const [loadingRepos, setLoadingRepos] = React.useState(false);
   const { repos, fetchRepos, pickPrimaryRepo, isLoading } = props;
-
-  const handleListItemClick = (event, index) => {
-    setSelectedIndex(index);
-  };
 
   const selectPrimaryRepo = (repoId) => {
     // TODO: err if no repo found
@@ -86,38 +70,18 @@ export default function RepoPickerList(props) {
   }
 
   const getNextPage = () => {
-    setSelectedIndex(null);
-    setLoadingRepos(true);
     fetchRepos(repos.nextPage);
   }
 
   const getPreviousPage = () => {
-    setSelectedIndex(null);
     fetchRepos(repos.prevPage);
   }
-
-  // <ListItem
-  //   key={repo.id}
-  //   selected={selectedIndex === repo.id}
-  //   onClick={event => handleListItemClick(event, repo.id)}
-  //   button
-  // >
-  //   <ListItemIcon>
-  //     <RepoIcon/>
-  //   </ListItemIcon>
-  //   <ListItemText
-  //     id={labelId}
-  //     primary={`${repo.full_name}`}
-  //     secondary={`${repo.stargazers_count} stargazers`}
-  //   />
-  // </ListItem>
 
   return (
     !isLoading ?
       <Grid container spacing={1} direction="column" alignItems="center">
         <Grid item container spacing={4}>
           {repos.data.map(repo => {
-            const labelId = `checkbox-list-secondary-label-${repo.id}`;
             return (
               <Grid item xs={12} sm={6} md={4} lg={3} key={repo.id}>
                 <Card className={classes.cardRoot}>

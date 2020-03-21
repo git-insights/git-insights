@@ -14,7 +14,7 @@ const logger = createLogger({
   ),
 });
 
-const IS_PROD = process.env.NODE_ENV === 'production';
+// const IS_PROD = process.env.NODE_ENV === 'production';
 
 /**
  * TODO: Figure out logging strategy
@@ -80,7 +80,7 @@ const loggerInterface = {
         //     errorData.fullError = errWithoutCommonProps;
         //   }
         // } else {
-          errorData.fullError = err;
+        errorData.fullError = err;
         // }
       }
 

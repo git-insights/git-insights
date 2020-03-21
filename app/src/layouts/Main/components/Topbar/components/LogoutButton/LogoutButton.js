@@ -3,8 +3,6 @@ import { makeStyles } from '@material-ui/styles';
 import { IconButton } from '@material-ui/core';
 import InputIcon from '@material-ui/icons/Input';
 import { useAuth } from 'context';
-import { Redirect } from 'react-router-dom';
-
 
 const useStyles = makeStyles(theme => ({
   signOutButton: {
@@ -22,7 +20,6 @@ const LogoutButton = props => {
     setNavigating(false);
   }
 
-
   return (
     <IconButton
       className={classes.signOutButton}
@@ -32,7 +29,6 @@ const LogoutButton = props => {
       <InputIcon />
     </IconButton>
   )
-
 }
 
 export default LogoutButton;

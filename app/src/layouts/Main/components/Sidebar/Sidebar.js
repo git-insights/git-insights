@@ -7,13 +7,7 @@ import DashboardIcon from '@material-ui/icons/Dashboard';
 import ErrorIcon from '@material-ui/icons/Error';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import CodeIcon from '@material-ui/icons/Code';
-import PeopleIcon from '@material-ui/icons/People';
-import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
-import TextFieldsIcon from '@material-ui/icons/TextFields';
-import ImageIcon from '@material-ui/icons/Image';
-import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import SettingsIcon from '@material-ui/icons/Settings';
-import LockOpenIcon from '@material-ui/icons/LockOpen';
 import { useUser } from 'context';
 
 import { Profile, SidebarNav } from './components';

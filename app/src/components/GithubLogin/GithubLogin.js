@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { objectToParams, decodeParam } from 'helpers';
+import { objectToParams } from 'helpers';
 
 const getIsMobile = () => {
   let isMobile = false;
@@ -100,7 +100,7 @@ class GithubLogin extends React.Component {
       return;
     }
     this.setState({ isProcessing: true });
-    const { scope, appId, onClick, returnScopes, responseType, redirectUri, disableMobileRedirect, authType, state } = this.props;
+    const { onClick } = this.props;
 
     if (typeof onClick === 'function') {
       onClick(e);

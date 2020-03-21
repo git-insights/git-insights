@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
 
-  Session.associate = function(models) {
+  Session.associate = function(_models) {
     // associations can be defined here
   };
   return Session;

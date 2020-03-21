@@ -4,14 +4,6 @@ import { Grid } from '@material-ui/core';
 import {
   useParams
 } from "react-router-dom";
-import {
-  StargazerHistogram,
-  OrganizationChart,
-  StargazerChoropleth,
-  StargazerTopCities,
-  StargazerTopRepos,
-  StargazerTopOrgList,
-} from './components';
 
 import {
   ActivityDatesAndTimesGraph,

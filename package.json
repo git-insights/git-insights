@@ -14,6 +14,8 @@
     "dev:client": "yarn workspace app dev",
     "build:client": "yarn workspace app build",
     "db:create": "yarn workspace server db:create",
-    "deploy": "yarn workspace server deploy:app && yarn workspace server deploy:workers"
+    "deploy": "yarn workspace server deploy:app && yarn workspace server deploy:workers",
+    "lint:server": "yarn workspace server lint",
+    "lint:client": "yarn workspace app lint"
   }
 }

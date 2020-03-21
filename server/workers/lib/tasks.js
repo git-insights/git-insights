@@ -52,7 +52,7 @@ async function fetchAndSaveIssues(repoId, owner, repo, githubInstallationId) {
 
   let allEvents = [];
 
-  for (issue of issues) {
+  for (const issue of issues) {
     let events = await github.listIssueEvents(
       owner,
       repo,
@@ -95,7 +95,7 @@ async function fetchAndSaveCommits(repoId, owner, repo, githubInstallationId) {
 
   let allCommits = []
 
-  for (commit of commits) {
+  for (const commit of commits) {
     let commitDetail = await github.getCommitFromRepo(
       owner,
       repo,
@@ -163,7 +163,7 @@ async function fetchAndSavePullRequests(repoId, owner, repo, githubInstallationI
 
   const allEvents = [];
 
-  for (review of reviews) {
+  for (const review of reviews) {
     let events = await github.listPullRequestEvents(
       owner,
       repo,

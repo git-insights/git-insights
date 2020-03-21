@@ -331,7 +331,7 @@ module.exports = {
     });
   },
 
-  async down(queryInterface, Sequelize) {
+  async down(queryInterface, _Sequelize) {
     await queryInterface.dropTable('cache');
     await queryInterface.dropTable('commit');
     await queryInterface.dropTable('gh_install');

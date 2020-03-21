@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
 
-  Cache.associate = function(models) {
+  Cache.associate = function(_models) {
     // associations can be defined here
   };
   return Cache;

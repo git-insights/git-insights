@@ -11,7 +11,9 @@
     "generate:migration": "sequelize-cli migration:generate --name migration-skeleton",
     "start": "npm run db:migrate && node src/run.js",
     "dev": "nodemon --exec npm start",
-    "dev:workers": "nodemon workers/index.js"
+    "dev:workers": "nodemon workers/index.js",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "dependencies": {
     "@google-cloud/logging-winston": "^3.0.5",
@@ -44,7 +46,11 @@
     "winston": "^3.2.1"
   },
   "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-prettier": "^3.1.2",
     "nodemon": "^1.19.4",
+    "prettier": "^1.19.1",
     "smee-client": "^1.1.0"
   }
 }

@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import GithubLogin from './GithubLogin';
 import { Github as GithubIcon } from 'icons';
 import { Button } from '@material-ui/core';
-import { makeStyles } from '@material-ui/styles';
+// import { makeStyles } from '@material-ui/styles';
 
-const useStyles = makeStyles(theme => ({
-  socialIcon: {
-    marginRight: theme.spacing(1)
-  },
-}));
+// const useStyles = makeStyles(theme => ({
+//   socialIcon: {
+//     marginRight: theme.spacing(1)
+//   },
+// }));
 
 // https://www.w3.org/TR/html5/disabled-elements.html#disabled-elements
 const _shouldAddDisabledProp = (tag) => [
@@ -63,12 +63,10 @@ class GithubLoginButton extends React.Component {
   }
 
   renderOwnButton(renderProps) {
-    const { cssClass, size, icon, textButton, typeButton, buttonStyle } = this.props;
     // const classes = useStyles();
 
     const { onClick, isDisabled } = renderProps;
 
-    const isIconString = typeof icon === 'string';
     const optionalProps = {};
     if (isDisabled && _shouldAddDisabledProp(this.props.tag)) {
       optionalProps.disabled = true;

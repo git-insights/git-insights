@@ -1,15 +1,8 @@
 import React from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import PerfectScrollbar from 'react-perfect-scrollbar';
 import { makeStyles, useTheme } from '@material-ui/styles';
 import {
-  Card,
-  CardHeader,
-  CardContent,
-  CardActions,
-  Divider,
-  Button,
   IconButton,
   Paper,
   Table,
@@ -141,9 +134,6 @@ const ContributorsTable = props => {
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
-
-  console.log(dataLoading)
-  console.log(data)
 
   return (
     <div {...rest} className={clsx(classes.root, className)}>

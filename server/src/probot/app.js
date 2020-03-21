@@ -35,7 +35,6 @@ module.exports = app => {
     const payloadPR = context.payload.pull_request;
     const payloadRepo = context.payload.repository;
     const payloadSender = context.payload.sender;
-    const payloadInstallation = context.payload.installation;
 
     // Check if this repo is being tracked, otherwise don't store the data
     const isTracked = await isRepoTracked(payloadRepo.id);
@@ -75,7 +74,6 @@ module.exports = app => {
     const payloadPR = context.payload.pull_request;
     const payloadRepo = context.payload.repository;
     const payloadSender = context.payload.sender;
-    const payloadInstallation = context.payload.installation;
 
     // Check if this repo is being tracked, otherwise don't store the data
     const isTracked = await isRepoTracked(payloadRepo.id);
@@ -113,7 +111,6 @@ module.exports = app => {
     const payloadReview = context.payload.pull_request;
     const payloadRepo = context.payload.repository;
     const payloadSender = context.payload.sender;
-    const payloadInstallation = context.payload.installation;
     let action = '';
 
     // Check if this repo is being tracked, otherwise don't store the data
@@ -131,7 +128,7 @@ module.exports = app => {
         action = 'review-deleted';
         break;
       default:
-        throw Error(`Unexpected payload action: pull_request_review.${payload.action}`)
+        throw Error(`Unexpected payload action: pull_request_review.${context.payload.action}`)
     }
 
     await models.ReviewEvent.create({
@@ -156,7 +153,6 @@ module.exports = app => {
     const payloadReview = context.payload.pull_request;
     const payloadRepo = context.payload.repository;
     const payloadSender = context.payload.sender;
-    const payloadInstallation = context.payload.installation;
     let action = '';
 
     // Check if this repo is being tracked, otherwise don't store the data
@@ -174,7 +170,7 @@ module.exports = app => {
         action = 'review-comment-deleted';
         break;
       default:
-        throw Error(`Unexpected payload action: pull_request_review_comment.${payload.action}`)
+        throw Error(`Unexpected payload action: pull_request_review_comment.${context.payload.action}`)
     }
 
     await models.Review.update(
@@ -212,7 +208,6 @@ module.exports = app => {
     const payloadIssue = context.payload.issue;
     const payloadRepo = context.payload.repository;
     const payloadSender = context.payload.sender;
-    const payloadInstallation = context.payload.installation;
 
     // Check if this repo is being tracked, otherwise don't store the data
     const isTracked = await isRepoTracked(payloadRepo.id);
@@ -249,7 +244,6 @@ module.exports = app => {
     const payloadIssue = context.payload.issue;
     const payloadRepo = context.payload.repository;
     const payloadSender = context.payload.sender;
-    const payloadInstallation = context.payload.installation;
 
     // Check if this repo is being tracked, otherwise don't store the data
     const isTracked = await isRepoTracked(payloadRepo.id);
@@ -330,7 +324,7 @@ module.exports = app => {
     };
     const github = new Github(options);
 
-    for (commit of context.payload.commits) {
+    for (const commit of context.payload.commits) {
       let commitDetail = await github.getCommitFromRepo(
         context.payload.repository.owner.name,
         context.payload.repository.name,
@@ -372,7 +366,6 @@ module.exports = app => {
     const payloadIssue = context.payload.issue;
     const payloadRepo = context.payload.repository;
     const payloadSender = context.payload.sender;
-    const payloadInstallation = context.payload.installation;
     let action = '';
 
     // Check if this repo is being tracked, otherwise don't store the data
@@ -390,7 +383,7 @@ module.exports = app => {
         action = 'comment-deleted';
         break;
       default:
-        throw Error(`Unexpected payload action: issue_comment.${payload.action}`)
+        throw Error(`Unexpected payload action: issue_comment.${context.payload.action}`)
     }
 
     await models.Issue.update(
@@ -437,18 +430,18 @@ module.exports = app => {
   /**
    * TODO: The app is installed first time, potentially on 1+ repos
    */
-  app.on('installation.created', async context => {});
+  app.on('installation.created', async _context => {});
 
   /**
    * TODO: Means the app is deleted from the account
    */
-  app.on('installation.deleted', async context => {});
+  app.on('installation.deleted', async _context => {});
 
   /**
    * TODO: Repository added or removed from installation
    */
-  app.on('installation_repositories.added', async context => {});
-  app.on('installation_repositories.removed', async context => {});
+  app.on('installation_repositories.added', async _context => {});
+  app.on('installation_repositories.removed', async _context => {});
 
   /**
    * TODO: HANDLE THE FOLLOWING EVENTS

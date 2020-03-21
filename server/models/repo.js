@@ -3,8 +3,8 @@ module.exports = (sequelize, DataTypes) => {
     'Repo',
     {
       id: {
-       type: DataTypes.INTEGER,
-       primaryKey: true,
+        type: DataTypes.INTEGER,
+        primaryKey: true,
       },
       node_id: DataTypes.TEXT,
       name: DataTypes.TEXT,

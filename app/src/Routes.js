@@ -14,11 +14,9 @@ import {
   Code as CodeView,
   Reviews as ReviewsView,
   Issues as IssuesView,
-  Settings as SettingsView,
   Account as AccountView,
   SignIn as SignInView,
   NotFound as NotFoundView,
-  Test as TestView,
   SetupCodeRepository as SetupCodeRepositoryView,
   GithubCodeRepository as GithubCodeRepositoryView,
 } from './views';
@@ -65,54 +63,6 @@ const Routes = () => {
         layout={MinimalLayout}
         path="/setup/code-repository/github"
       />
-      {/* <PrivateRouteWithLayout
-        component={TestView}
-        exact
-        layout={MainLayout}
-        path="/private"
-      />
-      <RouteWithLayout
-        component={UserListView}
-        exact
-        layout={MainLayout}
-        path="/users"
-      />
-      <RouteWithLayout
-        component={ProductListView}
-        exact
-        layout={MainLayout}
-        path="/products"
-      />
-      <RouteWithLayout
-        component={TypographyView}
-        exact
-        layout={MainLayout}
-        path="/typography"
-      />
-      <RouteWithLayout
-        component={IconsView}
-        exact
-        layout={MainLayout}
-        path="/icons"
-      />
-      <RouteWithLayout
-        component={AccountView}
-        exact
-        layout={MainLayout}
-        path="/account"
-      />
-      <RouteWithLayout
-        component={SignUpView}
-        exact
-        layout={MinimalLayout}
-        path="/sign-up"
-      />
-      <RouteWithLayout
-        component={TestView}
-        exact
-        layout={MainLayout}
-        path="/test"
-      /> */}
       <PrivateRouteWithLayout
         component={AccountView}
         exact

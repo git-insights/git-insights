@@ -2,7 +2,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/styles';
 import { Grid } from '@material-ui/core';
 
-import { AccountDetails, LinkedAccounts } from './components';
+import { LinkedAccounts } from './components';
 
 const useStyles = makeStyles(theme => ({
   root: {

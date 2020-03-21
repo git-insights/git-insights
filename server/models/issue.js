@@ -54,7 +54,7 @@ module.exports = (sequelize, DataTypes) => {
   /**
    * Methods
    */
-  Issue.associate = function(models) {}
+  Issue.associate = function(_models) {}
 
   return Issue;
 };

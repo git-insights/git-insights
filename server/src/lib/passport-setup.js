@@ -39,8 +39,10 @@ passport.use(new GitHubStrategy({
     // This will become more meaningful as we have multiple social logins
     // but an error for now
     if (existingEmailUser) {
-      req.flash('errors', { msg: 'There is already an account using this email address. Sign in to that account and link it with GitHub manually from Account Settings.' });
-      throw(err);
+      // TODO: flash won't work here, fix error handling
+      const errMsg = 'There is already an account using this email address. Sign in to that account and link it with GitHub manually from Account Settings.';
+      req.flash('errors', { msg: errMsg });
+      throw(new Error(errMsg));
     } else {
       const user = User.build({ ...profile });
       user.githubToken = accessToken;
@@ -48,7 +50,8 @@ passport.use(new GitHubStrategy({
       return done(null, savedUser);
     }
   } catch (err) {
-    console.log(err);
+    // TODO: fix error handling
+    // console.log(err);
     return done(err);
   }
 }));

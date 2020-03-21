@@ -133,7 +133,7 @@ Github.prototype.getStargazersFromRepo = async function(owner, repo) {
         per_page,
         page: currentPage,
         headers: {
-            accept: "application/vnd.github.v3.star+json"
+          accept: "application/vnd.github.v3.star+json"
         },
       });
       stargazers.push(...pageOfStarGazers.data);

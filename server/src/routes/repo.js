@@ -6,24 +6,6 @@ const { withAuthentication } = require('../middlewares');
 // All the routes need authorization
 router.use(withAuthentication);
 
-// Fetch stargazers
-router.route('/:id/stargazers').get(repoController.getStargazers);
-
-// Fetch shared orgs
-router.route('/:id/stargazer-orgs').get(repoController.getStargazerOrgs);
-
-// Fetch top shared orgs
-router.route('/:id/stargazer-orgs-top10').get(repoController.getStargazerTopOrgs);
-
-// Fetch stargazer countries
-router.route('/:id/stargazer-countries').get(repoController.getStargazerCountries);
-
-// Fetch stargazer top cities
-router.route('/:id/stargazer-topcities').get(repoController.getStargazerTopCities);
-
-// Fetch stargazer shared top repos
-router.route('/:id/stargazer-toprepos').get(repoController.getStargazerTopRepos);
-
 /**
  * Dashboard Graphs
  */

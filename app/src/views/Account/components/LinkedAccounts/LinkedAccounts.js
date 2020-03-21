@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
@@ -6,11 +6,8 @@ import {
   Card,
   CardHeader,
   CardContent,
-  CardActions,
   Divider,
-  Grid,
   Button,
-  TextField,
   Typography,
 } from '@material-ui/core';
 import { useUser } from 'context';
@@ -27,40 +24,8 @@ const useStyles = makeStyles(theme => ({
 
 const AccountDetails = props => {
   const { className, ...rest } = props;
-  const { user, fns } = useUser();
-
+  const { user } = useUser();
   const classes = useStyles();
-
-  // const [values, setValues] = useState({
-  //   firstName: 'Shen',
-  //   lastName: 'Zhi',
-  //   email: 'shen.zhi@devias.io',
-  //   phone: '',
-  //   state: 'Alabama',
-  //   country: 'USA'
-  // });
-
-  // const handleChange = event => {
-  //   setValues({
-  //     ...values,
-  //     [event.target.name]: event.target.value
-  //   });
-  // };
-
-  // const states = [
-  //   {
-  //     value: 'alabama',
-  //     label: 'Alabama'
-  //   },
-  //   {
-  //     value: 'new-york',
-  //     label: 'New York'
-  //   },
-  //   {
-  //     value: 'san-francisco',
-  //     label: 'San Francisco'
-  //   }
-  // ];
 
   return (
     <Card

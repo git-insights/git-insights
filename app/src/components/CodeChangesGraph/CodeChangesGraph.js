@@ -1,31 +1,31 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Plot from 'react-plotly.js';
-import { makeStyles } from '@material-ui/styles';
+// import { makeStyles } from '@material-ui/styles';
 import { BaseChartCard } from 'components';
 import { useFetch } from 'helpers';
 
-const useStyles = makeStyles(() => ({
-  root: {},
-  chartContainer: {
-    height: 400,
-    position: 'relative'
-  },
-  actions: {
-    justifyContent: 'flex-end'
-  },
-  cardActionBtn: {
-    top: '4px',
-    right: '4px',
-  }
-}));
+// const useStyles = makeStyles(() => ({
+//   root: {},
+//   chartContainer: {
+//     height: 400,
+//     position: 'relative'
+//   },
+//   actions: {
+//     justifyContent: 'flex-end'
+//   },
+//   cardActionBtn: {
+//     top: '4px',
+//     right: '4px',
+//   }
+// }));
 
 const CodeChangesGraph = props => {
-  const { className, repoid, ...rest } = props;
+  const { /*className,*/ repoid } = props;
   const [data, dataLoading] = useFetch(
     `api/repo/${repoid}/code/commits`
   );
-  const classes = useStyles();
+  // const classes = useStyles();
 
   return (
     <BaseChartCard
