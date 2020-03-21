@@ -5,13 +5,15 @@ jobs:
   build-and-test:
     executor:
       name: node/default
+    environment:
+      NODE_ENV: test
     steps:
       - checkout
       - node/with-cache:
           steps:
-            - run: npm install
-            - run: npm run lint:client
-            - run: npm run lint:server
+            - run: yarn install
+            - run: yarn run lint:client
+            - run: yarn run lint:server
 workflows:
     build-and-test:
       jobs:
