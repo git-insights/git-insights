@@ -7,6 +7,11 @@ const { withAuthentication } = require('../middlewares');
 router.use(withAuthentication);
 
 /**
+ * Main routes
+ */
+router.route('/:id').get(repoController.getRepoDetails);
+
+/**
  * Dashboard Graphs
  */
 router.route('/:id/activity-dates-times').get(repoController.getActivityDatesTimes);

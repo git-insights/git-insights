@@ -26,6 +26,7 @@
   "dependencies": {
     "@material-ui/core": "^4.2.1",
     "@material-ui/icons": "^4.2.1",
+    "@material-ui/lab": "^4.0.0-alpha.46",
     "@material-ui/styles": "^4.2.1",
     "@sentry/browser": "^5.13.0",
     "chart.js": "^2.8.0",

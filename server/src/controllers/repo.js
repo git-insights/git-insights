@@ -5,6 +5,34 @@ const moment = require('moment-timezone');
 moment.tz.setDefault('America/Los_Angeles');
 
 /**
+ * GET /repo/:id
+ * Given repo id, return details about the repo
+ */
+exports.getRepoDetails = asyncHandler(async(req, res) => {
+  const repoId = req.params.id;
+  const user = req.user;
+
+  // Make sure this repo is tracked by user
+  const valid = await models.TrackedRepo.findOne({
+    where: {
+      repoId: repoId,
+      userId: user.id
+    }
+  });
+
+  if (!valid) return res.status(401).json({});
+
+  const repo = await models.Repo.findOne({ where: { id: repoId } });
+  const repoObj = {
+    name: repo.name,
+    url: repo.htmlUrl
+  }
+
+  return res.json(repoObj);
+})
+
+
+/**
  *  Dashboard Graphs
 
   == TODO ==

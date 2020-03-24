@@ -2,8 +2,6 @@ const asyncHandler = require('express-async-handler');
 const models = require('../../models');
 const { Octokit } = require('@octokit/rest');
 const octokit = new Octokit({
-  debug: console,
-  info: console,
   log: console
 });
 const queues = require('../lib/queues').Connection;
@@ -119,15 +117,12 @@ exports.postTrackRepo = asyncHandler(async (req, res, _next) => {
     });
     repoDetails = repoDetails.data;
     repoDetails.processed = false;
+    repoDetails.user_id = user.id;
   } catch (e) {
     throw Error('Something unexpected happened while fetching repo');
   }
 
   await models.Repo.upsert(repoDetails);
-  await models.TrackedRepo.create({
-    repoId: repoDetails.id,
-    userId: user.id
-  });
   await models.User.update({
     trackingRepo: true,
     primaryRepo: repoDetails.id
