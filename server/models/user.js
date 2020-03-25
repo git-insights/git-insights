@@ -112,8 +112,17 @@ module.exports = (sequelize, DataTypes) => {
       }
     }
   );
+
   User.associate = function(models) {
-    User.belongsToMany(models.Repo, { through: models.TrackedRepo, foreignKey: 'user_id' });
+    User.hasMany(models.Repo, {
+      foreignKey: 'user_id',
+      sourceKey: 'id',
+      onDelete: 'cascade',
+      as: {
+        singular: 'repo',
+        plural: 'repos'
+      }
+    });
   };
 
   User.prototype.gravatar = (size) => {

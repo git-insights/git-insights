@@ -99,13 +99,10 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
   Repo.associate = function(models) {
-    Repo.belongsToMany(models.User, {
-      through: models.TrackedRepo,
-      foreignKey: 'repo_id',
-      as: {
-        singular: 'repo',
-        plural: 'repos',
-      }
+    Repo.belongsTo(models.User, {
+      foreignKey: 'user_id',
+      targetKey: 'id',
+      as: 'user'
     });
   }
   return Repo;

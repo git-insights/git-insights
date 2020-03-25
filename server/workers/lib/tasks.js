@@ -6,10 +6,16 @@ const { Op } = require('sequelize');
 moment.tz.setDefault('America/Los_Angeles');
 
 async function buildRepoHistory(repoId, repoOwner, repoName, githubInstallationId) {
+  // Process everything
   await fetchAndSaveIssues(repoId, repoOwner, repoName, githubInstallationId);
   await fetchAndSavePullRequests(repoId, repoOwner, repoName, githubInstallationId);
   await fetchAndSaveCommits(repoId, repoOwner, repoName, githubInstallationId);
   await fetchAndSaveGithubUsers(repoId, githubInstallationId);
+  // Finally save the repo
+  await models.Repo.update(
+    { processed: true },
+    { where: { id: repoId } }
+  );
 }
 
 async function fetchAndSaveIssues(repoId, owner, repo, githubInstallationId) {
