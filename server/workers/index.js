@@ -28,6 +28,11 @@ dotenvFiles.forEach(dotenvFile => {
   }
 });
 
+/**
+ * Set Up Logger
+ */
+const logger = require('../src/lib/logger');
+
 const Queue = require('bull');
 const { buildRepoHistory } = require('./lib/tasks');
 
@@ -43,15 +48,15 @@ var githubTaskQueue = new Queue(
 );
 
 githubTaskQueue.process(async (job) => {
-  console.log(`Processing Job ${job.id}`);
+  logger.info(`Processing Job ${job.id}`);
   const { repoId, repoName, repoOwner, githubInstallationId } = job.data;
   await buildRepoHistory(repoId, repoOwner, repoName, githubInstallationId);
 });
 
 githubTaskQueue.isReady().then(() => {
-  console.log('Worker ready to take jobs');
+  logger.info('Worker ready to take jobs');
 });
 
 githubTaskQueue.on('failed', (job, e) => {
-  console.error(`Failed Job ${job.id}: ${e}`);
+  logger.error(`Failed Job ${job.id}: ${e}`);
 });
