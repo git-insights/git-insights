@@ -15,6 +15,8 @@ function Github(options) {
   this.applicationId = options.applicationId || -1;
   this.privateKey = options.privateKey || null;
 
+  this.log = options.log || console;
+
   this.create();
 }
 
@@ -31,7 +33,7 @@ Github.prototype.pickToken = function() {
 Github.prototype.create = function() {
   if (this.type === 'personal') {
     const token = this.pickToken();
-    console.log(`Picked token ${token}`);
+    this.log.info(`Picked token ${token}`);
 
     this.options = {
       ...this.options,
@@ -59,31 +61,31 @@ Github.prototype.create = function() {
 }
 
 Github.prototype.getRepoDetails = async function(owner, repo) {
-  // console.log(`Fetching repo details for ${owner}/${repo}...`);
+  // this.log.info(`Fetching repo details for ${owner}/${repo}...`);
 
   try {
     const repoDetails = await this.github.repos.get({
       owner,
       repo
     });
-    // console.log(`Fetched repo details!`);
+    // this.log.info(`Fetched repo details!`);
     return repoDetails.data;
   } catch (e) {
-    console.log(e);
+    this.log.info(e);
   }
 }
 
 Github.prototype.getRepoDetailsById = async function(id) {
-  console.log(`Fetching repo details for ${id}...`);
+  this.log.info(`Fetching repo details for ${id}...`);
 
   try {
     const repoDetails = await this.github.repos.getById({
       id
     });
-    console.log(`Fetched repo details!`);
+    this.log.info(`Fetched repo details!`);
     return repoDetails.data;
   } catch (e) {
-    console.log(e);
+    this.log.info(e);
   }
 }
 
@@ -107,13 +109,13 @@ Github.prototype.getRepoContributorCount = async function(id) {
     // Remove '=' & '>' characters
     return matches[1].slice(1, -1);
   } catch(e) {
-    console.log(e);
+    this.log.info(e);
     return 0;
   }
 }
 
 Github.prototype.getStargazersFromRepo = async function(owner, repo) {
-  console.log(`Fetching stargazers for ${owner}/${repo}...`);
+  this.log.info(`Fetching stargazers for ${owner}/${repo}...`);
   const stargazers = [];
   const per_page = 100;
   let stargazerCount = 0;
@@ -139,10 +141,10 @@ Github.prototype.getStargazersFromRepo = async function(owner, repo) {
       stargazers.push(...pageOfStarGazers.data);
       currentPage++;
     }
-    console.log('Fetched all stargazers!');
+    this.log.info('Fetched all stargazers!');
     return stargazers;
   } catch (e) {
-    console.log(e);
+    this.log.info(e);
   }
 }
 
@@ -168,7 +170,7 @@ Github.prototype.getReposStarredByUser = async function(username, cap = 200) {
 
       return repos;
     } catch (err) {
-      console.log(err.message);
+      this.log.info(err.message);
       this.create();
       let result = await fetch();
       return result;
@@ -183,17 +185,17 @@ Github.prototype.getUser = async function(userLogin) {
   const fetch = async () => {
     try {
       const response = await this.github.users.getByUsername({ username: userLogin });
-      // console.log(`Details fetched for ${username}`);
+      // this.log.info(`Details fetched for ${username}`);
       return response.data;
       // return Object.assign({}, response.data, { location: user.location });
     } catch (err) {
       if (err.status === 404) {
-        console.log(`${username} skipped.`);
+        this.log.info(`${userLogin} skipped.`);
         // resolve(null);
         return {};
       }
 
-      console.log(err.message);
+      this.log.info(err.message);
       this.create();
       let result = await fetch();
       return result;
@@ -230,7 +232,7 @@ Github.prototype.listCommitsFromRepo = async function(owner, repo, since) {
         }
       }
 
-      console.log(err.message);
+      this.log.info(err.message);
       this.create();
       let result = await fetch();
       return result;
@@ -251,7 +253,7 @@ Github.prototype.getCommitFromRepo = async function(owner, repo, ref) {
       });
       return commit.data;
     } catch (err) {
-      console.log(err.message);
+      this.log.info(err.message);
       this.create();
       let result = await fetch();
       return result;
@@ -272,9 +274,9 @@ Github.prototype.printTopRepos = async function(q) {
   });
 
   for await (const response of this.github.paginate.iterator(options)) {
-    repos = [...response.data];
+    const repos = [...response.data];
     for (let repo of repos) {
-      console.log(`${repo.owner.login}\t${repo.name}\t${repo.stargazers_count}\t${repo.language}`)
+      this.log.info(`${repo.owner.login}\t${repo.name}\t${repo.stargazers_count}\t${repo.language}`)
     }
   }
 }
@@ -320,7 +322,7 @@ Github.prototype.listIssuesFromRepo = async function(owner, repo, since, state =
         }
       }
 
-      console.log(err.message);
+      this.log.info(err.message);
       this.create();
       let result = await fetch();
       return result;
@@ -372,7 +374,7 @@ Github.prototype.listPullRequestsFromRepo = async function(owner, repo, since, s
         }
       }
 
-      console.log(err.message);
+      this.log.info(err.message);
       this.create();
       let result = await fetch();
       return result;
@@ -409,7 +411,7 @@ Github.prototype.listIssueEvents = async function(owner, repo, issue_number) {
         }
       }
 
-      console.log(err.message);
+      this.log.info(err.message);
       this.create();
       let result = await fetch();
       return result;
@@ -448,7 +450,7 @@ Github.prototype.listCommentsForIssue = async function(owner, repo, issue_number
         }
       }
 
-      console.log(err.message);
+      this.log.info(err.message);
       this.create();
       let result = await fetch();
       return result;

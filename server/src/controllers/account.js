@@ -9,7 +9,7 @@ exports.getUser = asyncHandler(async (req, res) => {
    * Return user and information about it's tracked repos
    */
 
-   if (!req.user) return res.json({ user: null });
+  if (!req.user) return res.json({ user: null });
 
   const userId = req.user.id;
 
