@@ -1,0 +1,8 @@
+{
+  "verbose": true,
+  "rootDir": "..",
+  "roots": [
+    "<rootDir>/server"
+  ],
+  "testEnvironment": "node"
+}

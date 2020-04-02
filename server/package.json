@@ -13,7 +13,8 @@
     "dev": "nodemon --exec npm start",
     "dev:workers": "nodemon workers/index.js",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "test": "jest --config=./.jestconfig.json --runInBand --forceExit"
   },
   "dependencies": {
     "@google-cloud/logging-winston": "^3.0.5",
@@ -49,6 +50,7 @@
     "eslint": "^6.8.0",
     "eslint-plugin-import": "^2.20.1",
     "eslint-plugin-prettier": "^3.1.2",
+    "jest-cli": "^25.2.3",
     "nodemon": "^1.19.4",
     "prettier": "^1.19.1",
     "smee-client": "^1.1.0"

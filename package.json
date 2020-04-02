@@ -16,6 +16,7 @@
     "db:create": "yarn workspace server db:create",
     "deploy": "yarn workspace server deploy:app && yarn workspace server deploy:workers",
     "lint:server": "yarn workspace server lint",
-    "lint:client": "yarn workspace app lint"
+    "lint:client": "yarn workspace app lint",
+    "start": "yarn workspace server start"
   }
 }
