@@ -9183,6 +9183,21 @@ ioredis@^4.14.1:
     redis-parser "^3.0.0"
     standard-as-callback "^2.0.1"
 
+ioredis@^4.16.1:
+  version "4.16.1"
+  resolved "https://registry.yarnpkg.com/ioredis/-/ioredis-4.16.1.tgz#377c21d2a4fa8cc31fe9028c666f8dd16a6255bf"
+  integrity sha512-g76Mm9dE7BLuewncu1MimGZw5gDDjDwjoRony/VoSxSJEKAhuYncDEwYKYjtHi2NWsTNIB6XXRjE64uVa/wpKQ==
+  dependencies:
+    cluster-key-slot "^1.1.0"
+    debug "^4.1.1"
+    denque "^1.1.0"
+    lodash.defaults "^4.2.0"
+    lodash.flatten "^4.4.0"
+    redis-commands "1.5.0"
+    redis-errors "^1.2.0"
+    redis-parser "^3.0.0"
+    standard-as-callback "^2.0.1"
+
 ioredis@^4.5.1:
   version "4.14.1"
   resolved "https://registry.yarnpkg.com/ioredis/-/ioredis-4.14.1.tgz#b73ded95fcf220f106d33125a92ef6213aa31318"

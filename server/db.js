@@ -26,8 +26,5 @@ module.exports = {
     dialect: 'postgres',
     logging: false,
     migrationStorageTableName: 'sequelize_meta',
-    dialectOptions: {
-      socketPath: process.env.DB_SOCKETPATH
-    }
   }
 };

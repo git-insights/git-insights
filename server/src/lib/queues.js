@@ -1,27 +1,33 @@
 const Queue = require('bull');
+const Redis = require('ioredis');
 const logger = require('./logger');
+const { client, subscriber } = require('./redis');
 
-class Connection {
-  static async connectToRedis() {
-    if (this.githubTaskQueue) return this.githubTaskQueue;
-
-    this.githubTaskQueue = new Queue(
-      'github-queue',
-      {
-        redis: {
-          port: process.env.REDIS_PORT,
-          host: process.env.REDIS_HOSTNAME,
-          password: process.env.REDIS_PASSWORD
-        }
+const createQueue = queueName => {
+  const queue = new Queue(queueName, {
+    createClient: type => {
+      switch (type) {
+        case 'client':
+          return client;
+        case 'subscriber':
+          return subscriber;
+        default:
+          return new Redis({
+            port: process.env.REDIS_PORT,
+            host: process.env.REDIS_HOSTNAME,
+            family: 4, // 4 (IPv4) or 6 (IPv6)
+            password: process.env.REDIS_PASSWORD,
+            db: 0,
+          });
       }
-    );
+    },
+  });
 
-    await this.githubTaskQueue.isReady();
-    logger.info('Connected to task queue');
-    return this.db
-  }
+  queue.isReady().then(() => {
+    logger.info(`Connected to ${queueName}`);
+  });
+
+  return queue;
 }
 
-Connection.githubTaskQueue = null;
-
-module.exports = { Connection }
+module.exports = createQueue;

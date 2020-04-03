@@ -1,8 +1,10 @@
 const Github = require('./github');
 const models = require('../../models');
-const { daysAgo } = require('../../src/lib/times');
+const { daysAgo } = require('./times');
 const moment = require('moment-timezone');
 const { Op } = require('sequelize');
+const createQueue = require('./queues');
+const logger = require('./logger');
 moment.tz.setDefault('America/Los_Angeles');
 
 async function buildRepoHistory(repoId, repoOwner, repoName, githubInstallationId) {
@@ -303,6 +305,37 @@ async function fetchAndSaveGithubUsers(repoId, githubInstallationId) {
   });
 }
 
+const githubTaskQueue = createQueue('github tasks');
+
+githubTaskQueue.process(async job => {
+  try {
+    logger.info(`Processing Job ${job.id}`);
+    const { repoId, repoName, repoOwner, githubInstallationId } = job.data;
+    await buildRepoHistory(repoId, repoOwner, repoName, githubInstallationId);
+  } catch (err) {
+    logger.error(err);
+  }
+});
+
+const parseGithubHistory = (repoId, repoOwner, repoName, githubInstallationId) => {
+  return githubTaskQueue.add(
+    {
+      repoId,
+      repoOwner,
+      repoName,
+      githubInstallationId,
+    },
+    {
+      attempts: 5,
+      removeOnComplete: true,
+      backoff: {
+        type: 'exponential',
+        delay: 60 * 1000,
+      },
+    }
+  );
+};
+
 module.exports = {
-  buildRepoHistory,
+  parseGithubHistory,
 }

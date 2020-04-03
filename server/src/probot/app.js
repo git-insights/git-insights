@@ -1,12 +1,12 @@
 // const setupApi = require('./api');
 const models = require('../../models');
-const Github = require('../../workers/lib/github');
+const Github = require('../lib/github');
 
 // Returns true if repo is tracked, false otherwise
 async function isRepoTracked(repoId) {
-  const isTracked = await models.TrackedRepo.findOne({
+  const isTracked = await models.Repo.findOne({
     where: {
-      repoId
+      id: repoId
     }
   });
 

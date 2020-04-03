@@ -4,7 +4,7 @@ const { Octokit } = require('@octokit/rest');
 const octokit = new Octokit({
   log: console
 });
-const queues = require('../lib/queues').Connection;
+const { parseGithubHistory } = require('../lib/github-tasks');
 const logger = require('../lib/logger');
 
 /**
@@ -129,13 +129,14 @@ exports.postTrackRepo = asyncHandler(async (req, res, _next) => {
   }, {where: { id: user.id }});
 
   // Add task to queue
-  const task = await queues.githubTaskQueue.add({
-    repoId: repoDetails.id,
-    repoOwner: owner,
-    repoName: repoName,
-    githubInstallationId: user.githubAppId
+  parseGithubHistory(
+    repoDetails.id,
+    owner,
+    repoName,
+    user.githubAppId
+  ).then(task => {
+    logger.info(`Created task ${task.id}`);
   });
-  logger.info(`Created task ${task.id}`);
 
   return res.status(200).json({ repoId: repoDetails.id });
 });
