@@ -1,6 +1,7 @@
 // const setupApi = require('./api');
 const models = require('../../models');
 const Github = require('../lib/github');
+const GH_APP_PRIVATE_KEY = JSON.parse(`"${process.env.GH_APP_PRIVATE_KEY}"`);
 
 // Returns true if repo is tracked, false otherwise
 async function isRepoTracked(repoId) {
@@ -319,7 +320,7 @@ module.exports = app => {
       type: 'app-installation',
       applicationId: process.env.GH_APP_ID,
       installationId: context.payload.installation.id,
-      privateKey: process.env.GH_APP_PRIVATE_KEY,
+      privateKey: GH_APP_PRIVATE_KEY,
       // log: console
     };
     const github = new Github(options);

@@ -6,6 +6,7 @@ const octokit = new Octokit({
 });
 const { parseGithubHistory } = require('../lib/github-tasks');
 const logger = require('../lib/logger');
+const GH_APP_PRIVATE_KEY = JSON.parse(`"${process.env.GH_APP_PRIVATE_KEY}"`);
 
 /**
  * TODO: for now we create a new token every time
@@ -16,7 +17,7 @@ async function getUserToken(user) {
 
   const installationId = user.githubAppId;
 
-  const app = new App({ id: process.env.GH_APP_ID, privateKey: process.env.GH_APP_PRIVATE_KEY });
+  const app = new App({ id: process.env.GH_APP_ID, privateKey: GH_APP_PRIVATE_KEY });
   const installationAccessToken = await app.getInstallationAccessToken({ installationId });
 
   return installationAccessToken;

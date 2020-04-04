@@ -7,6 +7,8 @@ const createQueue = require('./queues');
 const logger = require('./logger');
 moment.tz.setDefault('America/Los_Angeles');
 
+const GH_APP_PRIVATE_KEY = JSON.parse(`"${process.env.GH_APP_PRIVATE_KEY}"`);
+
 async function buildRepoHistory(repoId, repoOwner, repoName, githubInstallationId) {
   // Process everything
   await fetchAndSaveIssues(repoId, repoOwner, repoName, githubInstallationId);
@@ -26,7 +28,7 @@ async function fetchAndSaveIssues(repoId, owner, repo, githubInstallationId) {
     type: 'app-installation',
     installationId: githubInstallationId,
     applicationId: process.env.GH_APP_ID,
-    privateKey: process.env.GH_APP_PRIVATE_KEY,
+    privateKey: GH_APP_PRIVATE_KEY,
     // log: console
   };
   const github = new Github(options);
@@ -90,7 +92,7 @@ async function fetchAndSaveCommits(repoId, owner, repo, githubInstallationId) {
     type: 'app-installation',
     installationId: githubInstallationId,
     applicationId: process.env.GH_APP_ID,
-    privateKey: process.env.GH_APP_PRIVATE_KEY,
+    privateKey: GH_APP_PRIVATE_KEY,
     // log: console
   };
   const github = new Github(options);
@@ -138,7 +140,7 @@ async function fetchAndSavePullRequests(repoId, owner, repo, githubInstallationI
     type: 'app-installation',
     installationId: githubInstallationId,
     applicationId: process.env.GH_APP_ID,
-    privateKey: process.env.GH_APP_PRIVATE_KEY,
+    privateKey: GH_APP_PRIVATE_KEY,
     // log: console
   };
   const github = new Github(options);
@@ -241,7 +243,7 @@ async function fetchAndSaveGithubUsers(repoId, githubInstallationId) {
     type: 'app-installation',
     installationId: githubInstallationId,
     applicationId: process.env.GH_APP_ID,
-    privateKey: process.env.GH_APP_PRIVATE_KEY,
+    privateKey: GH_APP_PRIVATE_KEY,
     // log: console
   };
   const github = new Github(options);
