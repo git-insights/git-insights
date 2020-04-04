@@ -5,12 +5,6 @@ const authRoutes = require('./auth');
 const userRoutes = require('./user');
 const router = express.Router();
 
-/**
- *  GET /_ah/health
- *  Health check for Google App Engine
- */
-router.get('/_ah/health', (req, res) => res.status(200).send('ok'));
-
 // Mount Routes
 router.use('/accounts', accountRoutes);
 router.use('/repo', repoRoutes);
