@@ -1,3 +1,13 @@
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/git-insights/git-insights/master/.github/logo.png" />
+</p>
+<p align="center">
+  <i>An open analytics tool to give you insights on your software projects and teams built using React and Node.js.<br/>Try out Git Insights using our hosted version at <a href="https://www.gitinsigts.io">www.gitinsigts.io</a>.</i>
+  <br/>
+  <img src="https://github.com/git-insights/git-insights/blob/401bea30ad3a4cb100855dac3bd8329fef6c46b8/.github/screenshot.png" alt="GitInsights" width="800" />
+</p>
+
 # Git Insights (Community Edition)
 
 Git Insights is an analytics tool to give you insights on your software projects and teams. You can collect and analyze all your commits, pull requests, and issues, without sending the data to 3rd party services.
