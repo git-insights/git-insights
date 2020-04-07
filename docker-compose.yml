@@ -11,10 +11,10 @@ services:
     environment:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: pass
-      POSTGRES_DB: outline
-  outline:
-    image: outline:v001
-    command: yarn dev
+      POSTGRES_DB: gitinsights
+  front-end:
+    image: gitinsights:v001
+    command: yarn dev:client
     build:
       context: .
       dockerfile: Dockerfile
@@ -22,6 +22,18 @@ services:
         pull: 1
     ports:
       - "3000:3000"
+    volumes:
+      - .:/opt/gitinsights
+  api:
+    image: gitinsights:v001
+    command: yarn dev:api
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        pull: 1
+    ports:
+      - "8000:8000"
     volumes:
       - .:/opt/gitinsights
     depends_on:

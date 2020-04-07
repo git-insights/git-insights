@@ -1,16 +1,10 @@
 up:
 	docker-compose up -d redis postgres
-	docker-compose run --rm gitinsights /bin/sh -c "yarn && yarn sequelize db:migrate"
-	docker-compose up gitinsights
+	docker-compose run --rm api yarn
+	docker-compose up api front-end
 
 build:
-	docker-compose build --pull gitinsights
-
-test:
-	docker-compose run --rm gitinsights yarn test
-
-watch:
-	docker-compose run --rm gitinsights yarn test:watch
+	docker-compose build --pull api front-end
 
 destroy:
 	docker-compose stop
