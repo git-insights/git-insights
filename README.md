@@ -1,6 +1,29 @@
-# Git Insights (Community Edition)
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/git-insights/git-insights/master/.github/logo.png" height="45"/>
+</p>
+<p align="center">
+  <i>An open analytics tool to give you insights on your software projects and teams built using React and Node.js.<br/>Try out Git Insights using our hosted version at <a href="https://www.gitinsights.io">www.gitinsights.io</a>.</i>
+  <br/>
+  <img src="https://github.com/git-insights/git-insights/blob/401bea30ad3a4cb100855dac3bd8329fef6c46b8/.github/screenshot.png" alt="GitInsights" width="800" />
+</p>
+
+If you just want to use Git Insights then you don't need to run this code, we offer a free hosted version of the application at [gitinsights.io](https://www.gitinsights.io). If you'd like to contribute to development then this is the place for you.
+
+## What is Git Insights?
 
 Git Insights is an analytics tool to give you insights on your software projects and teams. You can collect and analyze all your commits, pull requests, and issues, without sending the data to 3rd party services.
+
+## Development
+
+You can quickly get a dev environment running using Docker by following these steps:
+
+1. Clone this repo
+1. Install [Docker for Desktop](https://www.docker.com) if you don't already have it
+1. Create a [Github App](https://developer.github.com/apps/quickstart-guides/setting-up-your-development-environment/)
+1. Copy the file `server/.env.sample` to `server/.env`
+1. Fill out all the fields
+1. Run `make up`. This command will download all dependencies, build and launch a local copy of Git Insights
 
 ## Metrics We Care About
 
