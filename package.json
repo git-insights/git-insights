@@ -5,6 +5,7 @@
     "app",
     "server"
   ],
+  "version": "1.0.0",
   "scripts": {
     "test": "echo \"not implemented yet.\"",
     "test:server": "echo \"not implemented yet.\"",
@@ -17,6 +18,51 @@
     "deploy": "yarn workspace server deploy:app && yarn workspace server deploy:workers",
     "lint:server": "yarn workspace server lint",
     "lint:client": "yarn workspace app lint",
-    "start": "yarn workspace server start"
+    "start": "yarn workspace server start",
+    "cm": "git cz"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^8.2.0",
+    "@commitlint/config-conventional": "^8.2.0",
+    "@commitlint/travis-cli": "^8.3.5",
+    "@semantic-release/changelog": "^5.0.0",
+    "@semantic-release/commit-analyzer": "^8.0.1",
+    "@semantic-release/git": "^9.0.0",
+    "@semantic-release/npm": "^7.0.3",
+    "@semantic-release/release-notes-generator": "^9.0.1",
+    "commitizen": "^4.0.3",
+    "cz-conventional-changelog": "^3.1.0",
+    "husky": "^3.1.0",
+    "semantic-release": "^17.0.4"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "release": {
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/changelog",
+      [
+        "@semantic-release/npm",
+        {
+          "npmPublish": false
+        }
+      ],
+      "@semantic-release/git"
+    ],
+    "branch": "master"
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
   }
 }
