@@ -21,3 +21,4 @@ export { default as IssuesAgeGraph } from './IssuesAgeGraph';
 export { default as IssuesResponseTimeGraph } from './IssuesResponseTimeGraph';
 export { default as IssuesResolutionDurationGraph } from './IssuesResolutionDurationGraph';
 export { default as BaseChartCard } from './BaseChartCard';
+export { default as GA } from './GoogleAnalytics';

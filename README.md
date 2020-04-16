@@ -21,8 +21,9 @@ You can quickly get a dev environment running using Docker by following these st
 1. Clone this repo
 1. Install [Docker for Desktop](https://www.docker.com) if you don't already have it
 1. Create a [Github App](https://developer.github.com/apps/quickstart-guides/setting-up-your-development-environment/)
+1. Copy the file `app/.env.sample` to `app/.env`
 1. Copy the file `server/.env.sample` to `server/.env`
-1. Fill out all the fields
+1. Fill out all the env fields
 1. Run `make up`. This command will download all dependencies, build and launch a local copy of Git Insights
 
 ## Metrics We Care About
