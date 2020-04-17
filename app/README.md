@@ -15,5 +15,5 @@ Based on: [Devias Kit](https://react-material-dashboard.devias.io/dashboard),  [
 
 The documentation for the React Material Kit is can be found [online](https://material-ui.com).
 
-You need to modify `.env.development` to point to the correct API server
+You need to modify `.env` to point to the correct API server
 
