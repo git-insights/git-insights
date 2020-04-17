@@ -2,6 +2,13 @@ const Octokit = require('@octokit/rest').plugin([
   require('./octokit-plugins').getRepoById,
 ]);
 
+// Used to remove duplicate entries from Object Arrays
+const removeDuplicateEntries = (array, key) => {
+  let cachedObject = {};
+  array.map((item) => cachedObject[item[key]] = item);
+  return Object.values(cachedObject);
+};
+
 function Github(options) {
   this.options = options;
 
@@ -108,8 +115,8 @@ Github.prototype.getRepoContributorCount = async function(id) {
     const matches = res.headers.link.match(re);
     // Remove '=' & '>' characters
     return matches[1].slice(1, -1);
-  } catch(e) {
-    this.log.info(e);
+  } catch(err) {
+    this.log.error(err);
     return 0;
   }
 }
@@ -170,7 +177,7 @@ Github.prototype.getReposStarredByUser = async function(username, cap = 200) {
 
       return repos;
     } catch (err) {
-      this.log.info(err.message);
+      this.log.error(err);
       this.create();
       let result = await fetch();
       return result;
@@ -195,7 +202,7 @@ Github.prototype.getUser = async function(userLogin) {
         return {};
       }
 
-      this.log.info(err.message);
+      this.log.error(err);
       this.create();
       let result = await fetch();
       return result;
@@ -211,7 +218,7 @@ Github.prototype.listCommitsFromRepo = async function(owner, repo, since) {
 
   const fetch = async () => {
     try {
-      const commits = [];
+      let commits = [];
 
       const options = this.github.repos.listCommits.endpoint.merge({
         owner,
@@ -220,9 +227,11 @@ Github.prototype.listCommitsFromRepo = async function(owner, repo, since) {
         per_page
       });
 
-      for await (const response of this.github.paginate.iterator(options)) {
-        commits.push(...response.data);
-      }
+      // Fetch all
+      commits = await this.github.paginate(options);
+
+      // Remove duplicates that may happen due to race condition
+      commits = removeDuplicateEntries(commits, 'sha');
 
       return commits;
     } catch (err) {
@@ -232,7 +241,7 @@ Github.prototype.listCommitsFromRepo = async function(owner, repo, since) {
         }
       }
 
-      this.log.info(err.message);
+      this.log.error(err);
       this.create();
       let result = await fetch();
       return result;
@@ -253,7 +262,7 @@ Github.prototype.getCommitFromRepo = async function(owner, repo, ref) {
       });
       return commit.data;
     } catch (err) {
-      this.log.info(err.message);
+      this.log.error(err);
       this.create();
       let result = await fetch();
       return result;
@@ -307,12 +316,14 @@ Github.prototype.listIssuesFromRepo = async function(owner, repo, since, state =
         state,
       });
 
-      for await (const response of this.github.paginate.iterator(options)) {
-        issues.push(...response.data);
-      }
+      // Fetch all
+      issues = await this.github.paginate(options);
 
       // Filter out pull requests
       issues = issues.filter(val => !val.pull_request);
+
+      // Remove duplicates that may happen due to race condition
+      issues = removeDuplicateEntries(issues, 'id');
 
       return issues;
     } catch (err) {
@@ -322,7 +333,7 @@ Github.prototype.listIssuesFromRepo = async function(owner, repo, since, state =
         }
       }
 
-      this.log.info(err.message);
+      this.log.error(err);
       this.create();
       let result = await fetch();
       return result;
@@ -359,12 +370,14 @@ Github.prototype.listPullRequestsFromRepo = async function(owner, repo, since, s
         state,
       });
 
-      for await (const response of this.github.paginate.iterator(options)) {
-        issues.push(...response.data);
-      }
+      // Fetch all
+      issues = await this.github.paginate(options);
 
       // Filter out issues
       issues = issues.filter(val => val.pull_request);
+
+      // Remove duplicates that may happen due to race condition
+      issues = removeDuplicateEntries(issues, 'id');
 
       return issues;
     } catch (err) {
@@ -374,7 +387,7 @@ Github.prototype.listPullRequestsFromRepo = async function(owner, repo, since, s
         }
       }
 
-      this.log.info(err.message);
+      this.log.error(err);
       this.create();
       let result = await fetch();
       return result;
@@ -390,7 +403,7 @@ Github.prototype.listIssueEvents = async function(owner, repo, issue_number) {
 
   const fetch = async () => {
     try {
-      const issues = [];
+      let events = [];
 
       const options = this.github.issues.listEventsForTimeline.endpoint.merge({
         owner,
@@ -399,11 +412,13 @@ Github.prototype.listIssueEvents = async function(owner, repo, issue_number) {
         issue_number,
       });
 
-      for await (const response of this.github.paginate.iterator(options)) {
-        issues.push(...response.data);
-      }
+      // Fetch all
+      events = await this.github.paginate(options);
 
-      return issues;
+      // Remove duplicates that may happen due to race condition
+      events = removeDuplicateEntries(events, 'id');
+
+      return events;
     } catch (err) {
       if (err.status === 409) {
         if (err.message === "Git Repository is empty.") {
@@ -411,7 +426,7 @@ Github.prototype.listIssueEvents = async function(owner, repo, issue_number) {
         }
       }
 
-      this.log.info(err.message);
+      this.log.error(err);
       this.create();
       let result = await fetch();
       return result;
@@ -429,7 +444,7 @@ Github.prototype.listCommentsForIssue = async function(owner, repo, issue_number
 
   const fetch = async () => {
     try {
-      const issues = [];
+      let comments = [];
 
       const options = this.github.issues.listComments.endpoint.merge({
         owner,
@@ -438,11 +453,13 @@ Github.prototype.listCommentsForIssue = async function(owner, repo, issue_number
         issue_number,
       });
 
-      for await (const response of this.github.paginate.iterator(options)) {
-        issues.push(...response.data);
-      }
+      // Fetch all
+      comments = await this.github.paginate(options);
 
-      return issues;
+      // Remove duplicates that may happen due to race condition
+      comments = removeDuplicateEntries(comments, 'id');
+
+      return comments;
     } catch (err) {
       if (err.status === 409) {
         if (err.message === "Git Repository is empty.") {
@@ -450,7 +467,7 @@ Github.prototype.listCommentsForIssue = async function(owner, repo, issue_number
         }
       }
 
-      this.log.info(err.message);
+      this.log.error(err);
       this.create();
       let result = await fetch();
       return result;
