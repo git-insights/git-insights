@@ -14,7 +14,6 @@ jobs:
             - run: yarn install
             - run: yarn run lint:client
             - run: yarn run lint:server
-            - run: npm install
             - run: yarn semantic-release
 workflows:
   build-and-test:
