@@ -14,7 +14,8 @@ jobs:
             - run: yarn install
             - run: yarn run lint:client
             - run: yarn run lint:server
+            - run: yarn semantic-release
 workflows:
-    build-and-test:
-      jobs:
-        - build-and-test
+  build-and-test:
+    jobs:
+      - build-and-test
