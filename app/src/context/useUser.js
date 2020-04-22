@@ -4,7 +4,7 @@ import { apiClient, objectToParams } from 'helpers';
 
 const UserContext = createContext()
 
-// Fetch repos user has access to
+// Fetch repos user has access to (paginated)
 const fetchUserRepoPage = (page) => {
   const qs = {
     currentPage: page

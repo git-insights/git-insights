@@ -7,6 +7,7 @@ const octokit = new Octokit({
 const { parseGithubHistory } = require('../lib/github-tasks');
 const logger = require('../lib/logger');
 const GH_APP_PRIVATE_KEY = JSON.parse(`"${process.env.GH_APP_PRIVATE_KEY}"`);
+const Github = require('../lib/github');
 
 /**
  * TODO: for now we create a new token every time
@@ -88,6 +89,28 @@ exports.getGithubRepos = asyncHandler(async (req, res) => {
 
   let result = await fetch();
   return res.status(200).json(result);
+});
+
+/**
+ *  GET /user/github-repos/all
+ */
+exports.getGithubReposAll = asyncHandler(async (req, res) => {
+  const user = req.user;
+  const perPage = 12;
+
+  const options = {
+    'user-agent': 'gazer',
+    type: 'app-installation',
+    installationId: user.githubAppId,
+    applicationId: process.env.GH_APP_ID,
+    privateKey: GH_APP_PRIVATE_KEY,
+    // log: console
+  };
+
+  const github = new Github(options);
+  let results = await github.listAllRepositories();
+
+  return res.status(200).json(results);
 });
 
 /**

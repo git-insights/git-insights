@@ -478,4 +478,35 @@ Github.prototype.listCommentsForIssue = async function(owner, repo, issue_number
   return result;
 }
 
+Github.prototype.listAllRepositories = async function() {
+  const per_page = 100;
+
+  const fetch = async () => {
+    try {
+      let repos = [];
+
+      const options = this.github.apps.listRepos.endpoint.merge({ per_page });
+
+      // Fetch all
+      repos = await this.github.paginate(options);
+
+      return repos;
+    } catch (err) {
+      if (err.status === 409) {
+        if (err.message === "Git Repository is empty.") {
+          return [];
+        }
+      }
+
+      this.log.error(err);
+      this.create();
+      let result = await fetch();
+      return result;
+    }
+  }
+
+  let result = await fetch();
+  return result;
+}
+
 module.exports = Github;

@@ -2,7 +2,10 @@ import React from 'react';
 import { makeStyles } from '@material-ui/styles';
 import { Grid } from '@material-ui/core';
 
-import { LinkedAccounts } from './components';
+import {
+  LinkedAccounts,
+  Repositories,
+} from './components';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -19,13 +22,13 @@ const Account = () => {
         container
         spacing={4}
       >
-        {/* <Grid
+        <Grid
           item
           lg={6}
           xs={12}
         >
-          <AccountDetails />
-        </Grid> */}
+          <Repositories />
+        </Grid>
         <Grid
           item
           lg={6}
