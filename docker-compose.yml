@@ -15,6 +15,7 @@ services:
   front-end:
     image: gitinsights:v001
     command: yarn dev:client
+    stdin_open: true
     build:
       context: .
       dockerfile: Dockerfile
