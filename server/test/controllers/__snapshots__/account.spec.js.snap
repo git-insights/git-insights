@@ -1,0 +1,93 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Controller 'getUser'  should respond with an object with \`null\` user, when user doesn't exist in request. 1`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      Object {
+        "user": null,
+      },
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": Object {
+        "json": [MockFunction] {
+          "calls": Array [
+            Array [
+              Object {
+                "user": null,
+              },
+            ],
+          ],
+          "results": [Circular],
+        },
+        "send": [MockFunction],
+        "status": [MockFunction],
+      },
+    },
+  ],
+}
+`;
+
+exports[`Controller 'getUser'  should respond with user model, when user exists in request. 1`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      Object {
+        "include": Object {
+          "as": "repos",
+          "model": [MockFunction],
+        },
+        "where": Object {
+          "id": "USER_ID_TEST",
+        },
+      },
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": Object {
+        "id": "USER_ID_TEST",
+      },
+    },
+  ],
+}
+`;
+
+exports[`Controller 'getUser'  should respond with user model, when user exists in request. 2`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      Object {
+        "user": Object {
+          "id": "USER_ID_TEST",
+        },
+      },
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": Object {
+        "json": [MockFunction] {
+          "calls": Array [
+            Array [
+              Object {
+                "user": Object {
+                  "id": "USER_ID_TEST",
+                },
+              },
+            ],
+          ],
+          "results": [Circular],
+        },
+        "send": [MockFunction],
+        "status": [MockFunction],
+      },
+    },
+  ],
+}
+`;

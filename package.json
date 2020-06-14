@@ -7,8 +7,8 @@
   ],
   "version": "1.0.0",
   "scripts": {
-    "test": "echo \"not implemented yet.\"",
-    "test:server": "echo \"not implemented yet.\"",
+    "test": "jest",
+    "test:server": "yarn workspace server test",
     "test:frontend": "echo \"not implemented yet.\"",
     "dev": "yarn dev:api && yarn dev:client",
     "dev:api": "yarn workspace server dev",
