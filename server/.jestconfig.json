@@ -4,5 +4,8 @@
   "roots": [
     "<rootDir>/server"
   ],
+  "collectCoverage": true,
+  "coverageReporters": ["text","html"],
+  "coverageDirectory": "<rootDir>/coverage/",
   "testEnvironment": "node"
 }
