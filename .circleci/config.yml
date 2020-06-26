@@ -1,6 +1,7 @@
 version: 2.1
 orbs:
   node: circleci/node@1.1.6
+  coveralls: coveralls/coveralls@1.0.6
 jobs:
   build-and-test:
     executor:
@@ -14,7 +15,9 @@ jobs:
             - run: yarn install
             - run: yarn run lint:client
             - run: yarn run lint:server
+            - run: yarn test
             - run: yarn semantic-release
+            - coveralls/upload
 workflows:
   build-and-test:
     jobs:

@@ -1,0 +1,148 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Controller 'getLoginFailure'  should respond with 401 status and failure object. 1`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      Object {
+        "message": "user failed to authenticate.",
+        "success": false,
+      },
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": Object {
+        "json": [MockFunction] {
+          "calls": Array [
+            Array [
+              Object {
+                "message": "user failed to authenticate.",
+                "success": false,
+              },
+            ],
+          ],
+          "results": [Circular],
+        },
+        "send": [MockFunction],
+        "status": [MockFunction] {
+          "calls": Array [
+            Array [
+              401,
+            ],
+          ],
+          "results": Array [
+            Object {
+              "type": "return",
+              "value": [Circular],
+            },
+          ],
+        },
+      },
+    },
+  ],
+}
+`;
+
+exports[`Controller 'getLoginSuccess'  should respond with success object, when user exists in request. 1`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      Object {
+        "cookies": Object {},
+        "message": "user has successfully authenticated",
+        "success": true,
+        "user": Object {},
+      },
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": Object {
+        "json": [MockFunction] {
+          "calls": Array [
+            Array [
+              Object {
+                "cookies": Object {},
+                "message": "user has successfully authenticated",
+                "success": true,
+                "user": Object {},
+              },
+            ],
+          ],
+          "results": [Circular],
+        },
+        "send": [MockFunction],
+        "status": [MockFunction],
+      },
+    },
+  ],
+}
+`;
+
+exports[`Controller 'getLogout'  should call logout and redirect to client home page. 1`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      "http://www.google.com",
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": Object {
+        "body": [MockFunction],
+        "logout": [MockFunction] {
+          "calls": Array [
+            Array [],
+          ],
+          "results": Array [
+            Object {
+              "type": "return",
+              "value": [Circular],
+            },
+          ],
+        },
+        "params": [MockFunction],
+      },
+    },
+  ],
+}
+`;
+
+exports[`Controller 'postGithubAuthenticate'  should respond with 401 status and failure message, when user doesn't exist in request 1`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      401,
+      "User Not Authenticated",
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": Object {
+        "json": [MockFunction],
+        "send": [MockFunction] {
+          "calls": Array [
+            Array [
+              401,
+              "User Not Authenticated",
+            ],
+          ],
+          "results": [Circular],
+        },
+        "status": [MockFunction],
+      },
+    },
+  ],
+}
+`;
+
+exports[`Controller 'postGithubAuthenticate'  should set req.auth object with user id and call next, when user exists in request 1`] = `
+Object {
+  "id": "USER_ID_TEST",
+}
+`;

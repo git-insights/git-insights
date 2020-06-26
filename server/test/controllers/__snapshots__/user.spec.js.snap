@@ -1,0 +1,249 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Controller 'getGithubRepos'  should call listRepos with correct data, and respond with correct pagination. 1`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      Object {
+        "headers": Object {
+          "accept": "application/vnd.github.machine-man-preview+json",
+          "authorization": "BEARER APP_ID_TEST",
+        },
+        "page": 4,
+        "per_page": 12,
+        "sort": "updated",
+      },
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": Object {
+        "data": Object {
+          "repositories": Array [
+            "repo_1",
+            "repo_2",
+          ],
+        },
+        "headers": Object {
+          "link": "<https://api.github.com/user/repos?type=public&per_page=10&sort=updated&page=1>;rel=\\"prev\\",    <https://api.github.com/user/repos?type=public&per_page=10&sort=updated&page=3>; rel=\\"next\\"",
+        },
+      },
+    },
+  ],
+}
+`;
+
+exports[`Controller 'getGithubRepos'  should call listRepos with correct data, and respond with correct pagination. 2`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      Object {
+        "currentPage": 4,
+        "data": Array [
+          "repo_1",
+          "repo_2",
+        ],
+        "nextPage": 5,
+        "prevPage": 3,
+      },
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": Object {
+        "json": [MockFunction] {
+          "calls": Array [
+            Array [
+              Object {
+                "currentPage": 4,
+                "data": Array [
+                  "repo_1",
+                  "repo_2",
+                ],
+                "nextPage": 5,
+                "prevPage": 3,
+              },
+            ],
+          ],
+          "results": [Circular],
+        },
+        "send": [MockFunction],
+        "status": [MockFunction] {
+          "calls": Array [
+            Array [
+              200,
+            ],
+          ],
+          "results": Array [
+            Object {
+              "type": "return",
+              "value": [Circular],
+            },
+          ],
+        },
+      },
+    },
+  ],
+}
+`;
+
+exports[`Controller 'getLogout'  should call logout and return with status 200 / OK. 1`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      Object {
+        "status": "ok",
+      },
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": Object {
+        "json": [MockFunction] {
+          "calls": Array [
+            Array [
+              Object {
+                "status": "ok",
+              },
+            ],
+          ],
+          "results": [Circular],
+        },
+        "send": [MockFunction],
+        "status": [MockFunction] {
+          "calls": Array [
+            Array [
+              200,
+            ],
+          ],
+          "results": Array [
+            Object {
+              "type": "return",
+              "value": [Circular],
+            },
+          ],
+        },
+      },
+    },
+  ],
+}
+`;
+
+exports[`Controller 'postTrackRepo'  should respond with success object, when user exists in request. 1`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      Object {
+        "headers": Object {
+          "accept": "application/vnd.github.machine-man-preview+json",
+          "authorization": "BEARER GH_TOKEN_TEST",
+        },
+        "owner": Object {},
+        "repo": Object {},
+      },
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": Object {
+        "data": Object {
+          "id": "GH_REPO_ID_TEST",
+          "processed": false,
+          "user_id": "USER_ID_TEST",
+        },
+      },
+    },
+  ],
+}
+`;
+
+exports[`Controller 'postTrackRepo'  should respond with success object, when user exists in request. 2`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      Object {
+        "repoId": "GH_REPO_ID_TEST",
+      },
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": Object {
+        "json": [MockFunction] {
+          "calls": Array [
+            Array [
+              Object {
+                "repoId": "GH_REPO_ID_TEST",
+              },
+            ],
+          ],
+          "results": [Circular],
+        },
+        "send": [MockFunction],
+        "status": [MockFunction] {
+          "calls": Array [
+            Array [
+              200,
+            ],
+          ],
+          "results": Array [
+            Object {
+              "type": "return",
+              "value": [Circular],
+            },
+          ],
+        },
+      },
+    },
+  ],
+}
+`;
+
+exports[`Controller 'postTrackRepo'  should respond with success object, when user exists in request. 3`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      Object {
+        "id": "GH_REPO_ID_TEST",
+        "processed": false,
+        "user_id": "USER_ID_TEST",
+      },
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": undefined,
+    },
+  ],
+}
+`;
+
+exports[`Controller 'postTrackRepo'  should respond with success object, when user exists in request. 4`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      Object {
+        "primaryRepo": "GH_REPO_ID_TEST",
+        "trackingRepo": true,
+      },
+      Object {
+        "where": Object {
+          "id": "USER_ID_TEST",
+        },
+      },
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": undefined,
+    },
+  ],
+}
+`;

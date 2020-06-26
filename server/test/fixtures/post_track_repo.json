@@ -1,0 +1,12 @@
+{
+    "user": {
+        "id": "USER_ID_TEST",
+        "trackingRepo": false,
+        "githubToken": "GH_TOKEN_TEST",
+        "githubAppId": "APP_ID_TEST"
+    },
+    "body": {
+        "owner": {},
+        "repo": {}
+    }
+}

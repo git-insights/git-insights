@@ -1,0 +1,10 @@
+{
+    "user": {
+        "id": "USER_ID_TEST",
+        "githubAppId": "APP_ID_TEST",
+        "name": "USER_NAME_TEST"
+    },
+    "query": {
+        "currentPage": 4
+    }
+}
