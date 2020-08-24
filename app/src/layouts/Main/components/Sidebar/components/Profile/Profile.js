@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { Avatar, Typography } from '@material-ui/core';
-import { useUser } from 'context';
+import { useUserState } from 'context';
 import ContentLoader from "react-content-loader"
 
 const useStyles = makeStyles(theme => ({
@@ -39,7 +39,7 @@ const ProfileLoader = () => (
 
 const Profile = props => {
   const { className, ...rest } = props;
-  let { user } = useUser();
+  let { profile: user } = useUserState();
 
   const classes = useStyles();
 

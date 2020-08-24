@@ -96,7 +96,6 @@ exports.getGithubRepos = asyncHandler(async (req, res) => {
  */
 exports.getGithubReposAll = asyncHandler(async (req, res) => {
   const user = req.user;
-  const perPage = 12;
 
   const options = {
     'user-agent': 'gazer',
@@ -111,6 +110,30 @@ exports.getGithubReposAll = asyncHandler(async (req, res) => {
   let results = await github.listAllRepositories();
 
   return res.status(200).json(results);
+});
+
+/**
+ * GET /user/repositories
+ */
+exports.getRepoStatus = asyncHandler(async (req, res) => {
+  const userId = req.user.id;
+  const attributes = [
+    'id',
+    'name',
+    'full_name',
+    'description',
+    'url',
+    'processed'
+  ];
+
+  let repos = await models.Repo.findAll({
+    where: {
+      user_id: userId
+    },
+    attributes
+  });
+
+  res.status(200).json(repos);
 });
 
 /**
@@ -166,9 +189,55 @@ exports.postTrackRepo = asyncHandler(async (req, res, _next) => {
 });
 
 /**
+ * POST /user/repositories
+ * TODO: merge this and track-repo
+ */
+exports.postRepositories = asyncHandler(async (req, res, _next) => {
+  const user = req.user;
+
+  // TODO: param validations
+  // repositories = [{ "owner": "foo", "name": "bar" }, ...]
+  const repos = req.body.repositories;
+
+  if (!user.trackingRepo) { throw Error('cant call before acc setup'); }
+
+  // TODO: Add checks to make sure user has access
+  for (let repo of repos) {
+    // Fetch repo and prepare model
+    let repoDetails;
+    repoDetails = await octokit.repos.get({
+      owner: repo.owner,
+      repo: repo.name,
+      headers: {
+        accept: "application/vnd.github.machine-man-preview+json",
+        authorization: `BEARER ${user.githubToken}`
+      }
+    });
+    repoDetails = repoDetails.data;
+    repoDetails.processed = false;
+    repoDetails.user_id = user.id;
+
+    // Update db
+    await models.Repo.upsert(repoDetails);
+
+    // Add task to queue
+    parseGithubHistory(
+      repoDetails.id,
+      repo.owner,
+      repo.name,
+      user.githubAppId
+    ).then(task => {
+      logger.info(`Created task ${task.id}`);
+    });
+  }
+
+  return res.status(200).json({ status: 'ok' });
+});
+
+/**
  *  GET /user/logout
  */
 exports.getLogout = asyncHandler(async (req, res, _next) => {
   req.logout();
-  return res.status(200).json({ status: 'ok' })
+  return res.status(200).json({ status: 'ok' });
 });

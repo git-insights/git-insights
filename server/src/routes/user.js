@@ -12,6 +12,8 @@ router.route('/github-repos/all').get(userController.getGithubReposAll);
 
 // Pick a repo to track for user
 router.route('/track-repo').post(userController.postTrackRepo);
+router.route('/repositories').get(userController.getRepoStatus);
+router.route('/repositories').post(userController.postRepositories);
 
 // Logout
 router.route('/logout').get(

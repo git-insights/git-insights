@@ -9,7 +9,7 @@ const AuthContext = createContext();
 function AuthProvider(props) {
   const [firstAttemptFinished, setFirstAttemptFinished] = useState(false)
   const {
-    data = { user: null },
+    data = { profile: null, repositories: null },
     error,
     isRejected,
     isPending,

@@ -25,7 +25,6 @@ const CodeChangesGraph = props => {
   const [data, dataLoading] = useFetch(
     `api/repo/${repoid}/code/commits`
   );
-  // const classes = useStyles();
 
   return (
     <BaseChartCard

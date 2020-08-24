@@ -4,19 +4,19 @@ import { apiClient } from 'helpers';
 export default function(url) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  async function fetchUrl() {
-    try {
-      const response = await apiClient(url);
-      setData(response);
-      setLoading(false);
-    } catch (err) {
-      console.log(err);
-      setData(null);
-      setLoading(false);
-    }
-  }
   useEffect(() => {
+    const fetchUrl = async() => {
+      try {
+        const response = await apiClient(url);
+        setData(response);
+        setLoading(false);
+      } catch (err) {
+        setData(null);
+        setLoading(false);
+      }
+    }
+
     fetchUrl();
-  }, []);
+  }, [url]);
   return [data, loading];
 }

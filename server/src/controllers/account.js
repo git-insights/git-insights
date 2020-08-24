@@ -8,8 +8,15 @@ exports.getUser = asyncHandler(async (req, res) => {
   /**
    * Return user and information about it's tracked repos
    */
-
   if (!req.user) return res.json({ user: null });
+  const attributes = [
+    'id',
+    'name',
+    'full_name',
+    'description',
+    'url',
+    'processed'
+  ];
 
   const userId = req.user.id;
 
@@ -18,6 +25,7 @@ exports.getUser = asyncHandler(async (req, res) => {
     include: {
       model: models.Repo,
       as: 'repos',
+      attributes
     }
   });
 

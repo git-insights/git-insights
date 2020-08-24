@@ -10,7 +10,7 @@ import {
   Button,
   Typography,
 } from '@material-ui/core';
-import { useUser } from 'context';
+import { useUserState } from 'context';
 import {
   Github
 } from 'icons';
@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
 
 const AccountDetails = props => {
   const { className, ...rest } = props;
-  const { user } = useUser();
+  const { profile: user } = useUserState();
   const classes = useStyles();
 
   return (

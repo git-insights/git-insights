@@ -307,13 +307,40 @@ async function fetchAndSaveGithubUsers(repoId, githubInstallationId) {
   });
 }
 
+// Remove Github repo from database
+async function removeRepository(repoId) {
+  // Process everything
+  await Promise.all([
+    models.Repo.destroy({ where: { id: repoId }, force: true, }),
+    models.Commit.destroy({ where: { repo_id: repoId }}),
+    models.Issue.destroy({ where: { repo_id: repoId }}),
+    models.IssueEvent.destroy({ where: { repo_id: repoId }}),
+    models.Review.destroy({ where: { repo_id: repoId }}),
+    models.ReviewEvent.destroy({ where: { repo_id: repoId }})
+  ]);
+}
+
 const githubTaskQueue = createQueue('github tasks');
 
 githubTaskQueue.process(async job => {
   try {
     logger.info(`Processing Job ${job.id}`);
-    const { repoId, repoName, repoOwner, githubInstallationId } = job.data;
-    await buildRepoHistory(repoId, repoOwner, repoName, githubInstallationId);
+    const event = job.data;
+
+    switch (event.name) {
+      case 'repo.add': {
+        const { repoId, repoName, repoOwner, githubInstallationId } = event.data;
+        await buildRepoHistory(repoId, repoOwner, repoName, githubInstallationId);
+        break;
+      }
+      case 'repo.remove': {
+        const { repoId } = event.data;
+        await removeRepository(repoId);
+        break;
+      }
+      default:
+        throw Error(`Unknown job ${job}`);
+    }
   } catch (err) {
     logger.error(err);
   }
@@ -322,10 +349,13 @@ githubTaskQueue.process(async job => {
 const parseGithubHistory = (repoId, repoOwner, repoName, githubInstallationId) => {
   return githubTaskQueue.add(
     {
-      repoId,
-      repoOwner,
-      repoName,
-      githubInstallationId,
+      name: 'repo.add',
+      data: {
+        repoId,
+        repoOwner,
+        repoName,
+        githubInstallationId,
+      }
     },
     {
       attempts: 5,
@@ -338,6 +368,26 @@ const parseGithubHistory = (repoId, repoOwner, repoName, githubInstallationId) =
   );
 };
 
+const removeRepositoryTask = (repoId) => {
+  return githubTaskQueue.add(
+    {
+      name: 'repo.remove',
+      data: {
+        repoId,
+      }
+    },
+    {
+      attempts: 5,
+      removeOnComplete: true,
+      backoff: {
+        type: 'exponential',
+        delay: 60 * 1000,
+      },
+    }
+  );
+}
+
 module.exports = {
   parseGithubHistory,
+  removeRepositoryTask,
 }

@@ -10,6 +10,7 @@ router.use(withAuthentication);
  * Main routes
  */
 router.route('/:id').get(repoController.getRepoDetails);
+router.route('/:id').delete(repoController.deleteRepo);
 
 /**
  * Dashboard Graphs

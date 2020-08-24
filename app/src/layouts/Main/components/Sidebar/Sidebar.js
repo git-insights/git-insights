@@ -3,14 +3,18 @@ import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { Divider, Drawer } from '@material-ui/core';
-import DashboardIcon from '@material-ui/icons/Dashboard';
-import ErrorIcon from '@material-ui/icons/Error';
-import AssignmentIcon from '@material-ui/icons/Assignment';
-import CodeIcon from '@material-ui/icons/Code';
-import SettingsIcon from '@material-ui/icons/Settings';
-import { useUser } from 'context';
-
+import {
+  Dashboard as DashboardIcon,
+  Error as ErrorIcon,
+  Assignment as AssignmentIcon,
+  Code as CodeIcon,
+  Settings as SettingsIcon,
+} from '@material-ui/icons';
+import { useUserState } from 'context';
 import { Profile, SidebarNav } from './components';
+import {
+  useParams
+} from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
   drawer: {
@@ -37,31 +41,34 @@ const useStyles = makeStyles(theme => ({
 
 const Sidebar = props => {
   const { open, variant, onClose, className, ...rest } = props;
-  const { user } = useUser();
+  const { profile: user } = useUserState();
 
+  const { repoid } = useParams();
   const classes = useStyles();
+
+  const userRepoId = repoid || user.primaryRepo;
 
   const pages = [];
 
   pages.push(
     {
       title: 'Dashboard',
-      href: `/repo/${user.primaryRepo}/dashboard`,
+      href: `/repo/${userRepoId}/dashboard`,
       icon: <DashboardIcon/>
     },
     {
       title: 'Code',
-      href: `/repo/${user.primaryRepo}/code`,
+      href: `/repo/${userRepoId}/code`,
       icon: <CodeIcon/>
     },
     {
       title: 'Reviews',
-      href: `/repo/${user.primaryRepo}/reviews`,
+      href: `/repo/${userRepoId}/reviews`,
       icon: <AssignmentIcon/>
     },
     {
       title: 'Issues',
-      href: `/repo/${user.primaryRepo}/issues`,
+      href: `/repo/${userRepoId}/issues`,
       icon: <ErrorIcon/>
     },
     {

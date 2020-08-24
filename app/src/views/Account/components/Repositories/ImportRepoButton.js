@@ -8,7 +8,7 @@ import {
   DialogContentText,
   DialogTitle,
   Link,
-  Switch,
+  Checkbox,
   CircularProgress,
   Grid,
   Typography,
@@ -22,8 +22,13 @@ import {
 } from 'icons';
 import clsx from 'clsx';
 import { FixedSizeList as List } from 'react-window';
-import { apiClient } from 'helpers';
 import { makeStyles } from '@material-ui/styles';
+import {
+  useUserState,
+  useUserDispatch,
+  getGithubRepositories,
+  addRepositories
+} from 'context';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -45,49 +50,65 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const ImportRepoButton = props => {
-  const { user, className, style, ...rest } = props;
+  const {
+    user,
+    className,
+    style,
+  } = props;
   const [open, setOpen] = useState(false);
-  const [requested, setRequested] = useState(false);
-  const [data, setData] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
   const classes = useStyles();
+  const {
+    repositories,
+    githubRepositories,
+    statusOfGithubRepositories,
+  } = useUserState();
+  const userDispatch = useUserDispatch();
+  const isLoading = statusOfGithubRepositories === 'idle' || statusOfGithubRepositories === 'pending';
+  const [selectedRepos, setSelectedRepos] = useState({});
 
   const handleClickOpen = () => {
     setOpen(true);
   };
 
   const handleClose = () => {
+    setSelectedRepos({});
     setOpen(false);
   };
 
+  const handleCloseImport = () => {
+    const selectedRepoIndexes = Object.entries(selectedRepos).filter(pair => pair[1] === true).map(pair => pair[0]);
+    const newRepositories = selectedRepoIndexes.map(repoIndex => {
+      const repo = githubRepositories[repoIndex];
+      return {
+        description: repo.description,
+        full_name: repo.full_name,
+        id: repo.id,
+        name: repo.name,
+        url: repo.url,
+        processed: false,
+      };
+    });
+
+    if (newRepositories.length > 0) {
+      addRepositories(userDispatch, newRepositories);
+    }
+
+    handleClose();
+    setOpen(false);
+  }
+
   const handleChange = (event) => {
-    // const newData = [...data];
-    // newData[event.target.name] = {...newData[event.target.name], 'checked': event.target.checked };
-    // setData(newData);
+    setSelectedRepos({
+      ...selectedRepos,
+      [event.target.name]: event.target.checked
+    });
   };
 
   useEffect(() => {
-    if (open && !requested) {
-      const fetchData = async () => {
-        setIsLoading(true);
-
-        try {
-          let response = await apiClient('api/user/github-repos/all');
-          // filter by id
-          const userRepos = user.repos.map(repo => repo.id);
-          response = response.filter(repo => userRepos.indexOf(repo.id) === -1)
-          setData(response);
-        } catch (err) {
-          console.log(err);
-          setData([]);
-        }
-
-        setIsLoading(false);
-      }
-      fetchData();
-      setRequested(true);
+    if (open && statusOfGithubRepositories === 'idle') {
+      getGithubRepositories(userDispatch, repositories);
     }
-  }, [open]);
+  }, [open, repositories, statusOfGithubRepositories, userDispatch]);
 
   const Row = ({ index, style }) => (
     <div style={{
@@ -112,11 +133,11 @@ const ImportRepoButton = props => {
         flex: 1
       }}>
           <Typography variant="body1" display="inline">
-            {data[index].full_name}
+            {githubRepositories[index].full_name}
           </Typography>
           <IconButton
             aria-label="launch"
-            href={data[index].html_url}
+            href={githubRepositories[index].html_url}
             target="_blank"
             rel="noopener"
             size="small"
@@ -126,11 +147,11 @@ const ImportRepoButton = props => {
           </IconButton>
       </div>
       <div style={{}}>
-        <Switch
-          checked={data[index].checked}
+        <Checkbox
+          checked={selectedRepos[index]}
           onChange={handleChange}
           color="primary"
-          name={index}
+          name={index.toString()}
           inputProps={{ 'aria-label': 'primary checkbox' }}
         />
       </div>
@@ -167,7 +188,7 @@ const ImportRepoButton = props => {
                 </Grid>
               : <List
                   height={250}
-                  itemCount={data.length}
+                  itemCount={githubRepositories.length}
                   itemSize={35}
                   className={classes.repoList}
                 >
@@ -182,7 +203,7 @@ const ImportRepoButton = props => {
           <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={handleClose} color="primary" autoFocus>
+          <Button onClick={handleCloseImport} color="primary" autoFocus>
             Import
           </Button>
         </DialogActions>

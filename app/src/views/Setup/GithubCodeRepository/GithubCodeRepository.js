@@ -1,8 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/styles';
-import { useUser } from 'context';
+import {
+  useUserState,
+  useUserDispatch,
+  getGithubRepositories,
+  changePrimaryRepo,
+} from 'context';
 import { Grid, Typography, Container } from '@material-ui/core';
-import { Redirect } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 import {
   RepoPicker,
@@ -23,44 +28,32 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-
 const CodeRepository = () => {
-  const [repoData, setRepoData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [navigate, setNavigating] = useState(false);
-  const { user, fns } = useUser();
+  const history = useHistory();
+  const {
+    profile,
+    githubRepositories,
+    statusOfGithubRepositories,
+  } = useUserState();
+  const userDispatch = useUserDispatch();
   const classes = useStyles();
 
-  const pickPrimaryRepo = (repo) => {
-    fns.postUserPrimaryRepo(repo)
-      .then(data => {
-          user.primaryRepo = data.repoId;
-          user.trackingRepo = true;
-          setNavigating(true);
-      })
-      .catch(err => console.log(err))
-  }
-
-  const fetchRepoData = (page) => {
-    setLoading(true);
-    fns.fetchUserRepoPage(page)
-      .then(data => {
-        setRepoData(data);
-        setLoading(false);
-      })
-      .catch(err => console.log(err));
+  const pickPrimaryRepo = async repoId => {
+    const repo = githubRepositories.find(repo => repo.id === repoId);
+    await changePrimaryRepo(userDispatch, repo);
+    history.push(`/repo/${repoId}/dashboard`);
   }
 
   useEffect(() => {
-    if (!repoData) {
-      fetchRepoData(1);
+    if (profile.trackingRepo) {
+      history.push(`/repo/${profile.primaryRepo}/dashboard`);
+      return;
     }
-  });
 
-  if (navigate || user.trackingRepo) {
-    // Redirect to repo stats
-    return (<Redirect to={`/repo/${user.primaryRepo}/dashboard`} />);
-  }
+    if (statusOfGithubRepositories === 'idle' && githubRepositories.length === 0) {
+      getGithubRepositories(userDispatch);
+    }
+  }, [profile, statusOfGithubRepositories, githubRepositories, userDispatch, history]);
 
   return (
       <Container>
@@ -94,9 +87,11 @@ const CodeRepository = () => {
           className={classes.gridSection}
         >
           <RepoPicker
-            isLoading={loading}
-            repos={repoData}
-            fetchRepos={fetchRepoData}
+            isLoading={
+              statusOfGithubRepositories === 'idle' ||
+              statusOfGithubRepositories === 'pending'
+            }
+            repos={githubRepositories}
             pickPrimaryRepo={pickPrimaryRepo}
           />
         </Grid>

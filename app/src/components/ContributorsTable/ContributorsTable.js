@@ -198,10 +198,11 @@ const ContributorsTable = props => {
             <TablePagination
               colSpan={3}
               count={data.length}
+              component="div"
               rowsPerPage={5}
               page={page}
               onChangePage={handleChangePage}
-              rowsPerPageOptions={-1}
+              rowsPerPageOptions={[]}
               ActionsComponent={TablePaginationActions}
             />
           </div>

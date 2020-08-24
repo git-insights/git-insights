@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/styles';
-import { useUser } from 'context';
+import { useUserState } from 'context';
 import { IntegrationCard } from 'components';
 import { Grid, Typography, Container } from '@material-ui/core';
 import { Redirect } from 'react-router-dom';
@@ -27,29 +27,16 @@ const useStyles = makeStyles(theme => ({
 
 
 const CodeRepository = () => {
-  const [repoData, setRepoData] = useState(null);
-  const { user, fns } = useUser();
+  const { profile } = useUserState();
   const classes = useStyles();
 
-  const fetchRepoData = (page) => {
-    fns.fetchUserRepoPage(page)
-      .then(data => {
-        setRepoData(data);
-      })
-      .catch(err => console.log(err));
-  }
-
-  if (user.trackingRepo) {
+  if (profile.trackingRepo) {
     // Redirect to repo stats
-    return (<Redirect to={`/repo/${user.primaryRepo}/dashboard`} />);
-  }
-
-  if (!repoData) {
-    fetchRepoData(1);
+    return (<Redirect to={`/repo/${profile.primaryRepo}/dashboard`} />);
   }
 
   return (
-    user ?
+    profile ?
       <Container>
         <Grid
           container

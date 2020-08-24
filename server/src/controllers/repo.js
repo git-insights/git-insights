@@ -3,6 +3,7 @@ const asyncHandler = require('express-async-handler');
 const { Op } = require('sequelize');
 const moment = require('moment-timezone');
 moment.tz.setDefault('America/Los_Angeles');
+const { removeRepositoryTask } = require('../lib/github-tasks');
 
 /**
  * GET /repo/:id
@@ -31,6 +32,44 @@ exports.getRepoDetails = asyncHandler(async(req, res) => {
   return res.json(repoObj);
 })
 
+/**
+ * DELETE /repo/:id
+ * Given repo id, delete the repo and all data associated with it
+ */
+exports.deleteRepo = asyncHandler(async(req, res, next) => {
+  const repoId = req.params.id;
+  const user = req.user;
+
+  // Make sure this repo is tracked by user
+  const valid = await models.Repo.findOne({
+    where: {
+      id: repoId,
+      user_id: user.id
+    }
+  });
+
+  if (!valid) return res.status(404).json({
+    'message': 'repo not found'
+  });
+
+  try {
+    // Since paranoid is active we're just tagging for delete
+    await models.Repo.destroy({
+      where: {
+        id: repoId,
+        user_id: user.id
+      }
+    });
+
+    // Background task for deleting the data
+    await removeRepositoryTask(repoId);
+  } catch (err) {
+    // throw new Error(`Repo delete did not work as expected repoid:${repoId} userid:${user.id} err:${err}`);
+    next(err);
+  }
+
+  return res.status(204).send();
+});
 
 /**
  *  Dashboard Graphs

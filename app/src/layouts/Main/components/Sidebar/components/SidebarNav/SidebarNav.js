@@ -69,14 +69,14 @@ const SidebarNav = props => {
       {...rest}
       className={clsx(classes.root, className)}
     >
-      {pages.map(page => {
+      {pages.map((page, idx) => {
         if (page.type === 'subheader') {
           return (
-            <ListSubheader>{page.title}</ListSubheader>
+            <ListSubheader key={page.title}>{page.title}</ListSubheader>
           );
         } else if (page.type === 'divider') {
           return (
-            <Divider className={classes.divider}/>
+            <Divider key={idx} className={classes.divider}/>
           );
         } else {
           return (

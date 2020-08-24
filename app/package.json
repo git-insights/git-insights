@@ -48,6 +48,7 @@
     "react-scripts": "^3.0.1",
     "react-window": "^1.8.5",
     "recompose": "^0.30.0",
+    "swr": "^0.2.0",
     "underscore": "^1.9.1",
     "uuid": "^3.3.2",
     "validate.js": "^0.13.1"

@@ -22,3 +22,5 @@ export { default as IssuesResponseTimeGraph } from './IssuesResponseTimeGraph';
 export { default as IssuesResolutionDurationGraph } from './IssuesResolutionDurationGraph';
 export { default as BaseChartCard } from './BaseChartCard';
 export { default as GA } from './GoogleAnalytics';
+export { default as RepositoryStatusAlertBar } from './RepositoryStatusAlertBar';
+export { default as RepositoryNavigator } from './RepositoryNavigator';

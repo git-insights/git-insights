@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import LaunchIcon from '@material-ui/icons/Launch';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -57,31 +57,28 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function RepoPickerList(props) {
+  const { repos, pickPrimaryRepo, isLoading } = props;
+  const [pageNumber, setpageNumber] = useState(0);
+  const pageSize = 12;
   const classes = useStyles();
-  const { repos, fetchRepos, pickPrimaryRepo, isLoading } = props;
-
-  const selectPrimaryRepo = (repoId) => {
-    // TODO: err if no repo found
-    const repo = repos.data.find((repo) => repo.id === repoId);
-    pickPrimaryRepo({
-      owner: repo.owner.login,
-      repo: repo.name
-    });
-  }
 
   const getNextPage = () => {
-    fetchRepos(repos.nextPage);
+    setpageNumber(pageNumber + 1);
   }
 
   const getPreviousPage = () => {
-    fetchRepos(repos.prevPage);
+    setpageNumber(pageNumber - 1);
   }
+
+  const enablePreviousPage = pageNumber > 0;
+  const enableNextPage = (pageNumber + 1) * 12 < repos.length;
+  const reposPage = repos.slice(pageNumber * pageSize, (pageNumber + 1) * pageSize);
 
   return (
     !isLoading ?
       <Grid container spacing={1} direction="column" alignItems="center">
         <Grid item container spacing={4}>
-          {repos.data.map(repo => {
+          {reposPage.map(repo => {
             return (
               <Grid item xs={12} sm={6} md={4} lg={3} key={repo.id}>
                 <Card className={classes.cardRoot}>
@@ -101,7 +98,7 @@ export default function RepoPickerList(props) {
                       Visit
                     </Button>
                     <Button size="small" color="primary" variant="outlined"
-                      onClick={() => selectPrimaryRepo(repo.id)}
+                      onClick={() => pickPrimaryRepo(repo.id)}
                     >
                       Connect
                     </Button>
@@ -113,12 +110,12 @@ export default function RepoPickerList(props) {
         </Grid>
         <Grid item className={classes.buttonGrid}>
           <ButtonGroup>
-            {repos.prevPage ? (
+            {enablePreviousPage ? (
               <Button onClick={getPreviousPage}>Previous</Button>
             ) : (
               <Button disabled>Previous</Button>
             )}
-            {repos.nextPage ? (
+            {enableNextPage ? (
               <Button onClick={getNextPage}>Next</Button>
             ) : (
               <Button disabled>Next</Button>

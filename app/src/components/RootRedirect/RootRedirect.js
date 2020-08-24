@@ -1,12 +1,12 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import { useUser } from 'context';
+import { useUserState } from 'context';
 
 const RootRedirect = () => {
-  const { user } = useUser();
+  const { profile } = useUserState();
 
-  if (user && user.trackingRepo) {
-    return (<Redirect to={`/repo/${user.primaryRepo}/dashboard`} />);
+  if (profile && profile.trackingRepo) {
+    return (<Redirect to={`/repo/${profile.primaryRepo}/dashboard`} />);
   } else {
     return (<Redirect to={`/setup/code-repository`} />);
   }

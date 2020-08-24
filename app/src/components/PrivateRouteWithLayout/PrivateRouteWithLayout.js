@@ -1,13 +1,13 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { useUser } from 'context';
+import { useUserState } from 'context';
 
 const PrivateRouteWithLayout = props => {
   const { layout: Layout, component: Component, ...rest } = props;
-  const { user } = useUser();
+  const { profile } = useUserState();
 
-  if (user) {
+  if (profile) {
     return (
       <Route
         {...rest}

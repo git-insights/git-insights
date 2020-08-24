@@ -3,10 +3,14 @@ import authClient from './auth-client'
 async function bootstrapAppData() {
   const data = await authClient.getUser();
   if (!data) {
-    return { user: null }
+    return { profile: null, repositories: null }
   }
-  const { user } = data;
-  return { user };
+
+  const { user: profile, user: { repos: repositories } } = data;
+
+  delete data.user.repos;
+
+  return { profile, repositories };
 }
 
 export default bootstrapAppData;
