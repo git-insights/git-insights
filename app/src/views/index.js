@@ -14,3 +14,4 @@ export { default as UserList } from './UserList';
 export { default as Test } from './Test';
 export { default as SetupCodeRepository } from './Setup/CodeRepository';
 export { default as GithubCodeRepository } from './Setup/GithubCodeRepository';
+export { default as HelloWorld } from './HelloWorld';
