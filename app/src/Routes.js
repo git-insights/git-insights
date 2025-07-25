@@ -4,7 +4,7 @@ import { Switch, Redirect, Route } from 'react-router-dom';
 import {
   RouteWithLayout,
   PrivateRouteWithLayout,
-  RootRedirect,
+  
   GA,
 } from './components';
 import {
@@ -20,6 +20,7 @@ import {
   NotFound as NotFoundView,
   SetupCodeRepository as SetupCodeRepositoryView,
   GithubCodeRepository as GithubCodeRepositoryView,
+  HelloWorld as HelloWorldView,
 } from './views';
 
 const Routes = () => {
@@ -27,9 +28,12 @@ const Routes = () => {
     <>
       { GA.init() && <GA.RouteTracker /> }
       <Switch>
-        <Route exact path="/">
-          <RootRedirect/>
-        </Route>
+        <RouteWithLayout
+          component={HelloWorldView}
+          exact
+          layout={MinimalLayout}
+          path="/"
+        />
         <PrivateRouteWithLayout
           component={DashboardView}
           exact
